@@ -1,0 +1,44 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+bin/
+obj/
+out/
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+
+# Logs
+*.log
+
+# IIS Express
+iisexpress/
+*.ilk
+*.pdb
+
+# Publish output
+publish/
+wwwroot/uploads/
+
+# SQL or local files
+*.mdf
+*.ldf
+
+# Node / Angular
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+appsettings.Development.json
+
+# Others
+*.vsidx
