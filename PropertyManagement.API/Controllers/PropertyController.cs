@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PropertyManagement.API.Data;
 using PropertyManagement.API.Models.Domain;
+using PropertyManagement.API.Models.DTO;
 
 namespace PropertyManagement.API.Controllers
 {
@@ -20,22 +21,82 @@ namespace PropertyManagement.API.Controllers
         [HttpGet]
         public IActionResult GetAllProperties()
         {
-            var properties = dbContext.Properties.ToList();
-            return Ok(properties);
+            // Get data from database
+            var propertiesDomain = dbContext.Properties.ToList();
+
+            // Map domain model to DTO
+            var propertiesDto = new List<PropertyDto>();
+
+            foreach (var propertyDomain in propertiesDomain)
+            {
+                propertiesDto.Add(new PropertyDto()
+                {
+                    Id = propertyDomain.Id,
+                    UserId = propertyDomain.UserId,
+                    User = propertyDomain.User,
+                    Title = propertyDomain.Title,
+                    Price = propertyDomain.Price,
+                    City = propertyDomain.City,
+                    State = propertyDomain.State,
+                    Locality = propertyDomain.Locality,
+                    Pincode = propertyDomain.Pincode,
+                    NoOfRooms = propertyDomain.NoOfRooms,
+                    CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
+                    BuiltYear = propertyDomain.BuiltYear,
+                    Balcony = propertyDomain.Balcony,
+                    Parking = propertyDomain.Parking,
+                    PropertyImageUrl = propertyDomain.PropertyImageUrl,
+                    HallImageUrl = propertyDomain.HallImageUrl,
+                    KitchenImageUrl = propertyDomain.KitchenImageUrl,
+                    BathroomImageUrl = propertyDomain.BathroomImageUrl,
+                    BedroomImageUrl = propertyDomain.BedroomImageUrl,
+                    ParkingImageUrl = propertyDomain.ParkingImageUrl
+                });
+            }
+
+            // Return Dto response
+            return Ok(propertiesDto);
         }
 
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetPropertyById([FromRoute] Guid id)
         {
-            var property = dbContext.Properties.FirstOrDefault(x => x.Id == id);
+            // Get data from database
+            var propertyDomain = dbContext.Properties.FirstOrDefault(x => x.Id == id);
 
-            if (property == null)
+            if (propertyDomain == null)
             {
                 return NotFound();
             }
 
-            return Ok(property);
+            // Map domain model to Dto
+            var propertyDto = new PropertyDto
+            {
+                Id = propertyDomain.Id,
+                UserId = propertyDomain.UserId,
+                User = propertyDomain.User,
+                Title = propertyDomain.Title,
+                Price = propertyDomain.Price,
+                City = propertyDomain.City,
+                State = propertyDomain.State,
+                Locality = propertyDomain.Locality,
+                Pincode = propertyDomain.Pincode,
+                NoOfRooms = propertyDomain.NoOfRooms,
+                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
+                BuiltYear = propertyDomain.BuiltYear,
+                Balcony = propertyDomain.Balcony,
+                Parking = propertyDomain.Parking,
+                PropertyImageUrl = propertyDomain.PropertyImageUrl,
+                HallImageUrl = propertyDomain.HallImageUrl,
+                KitchenImageUrl = propertyDomain.KitchenImageUrl,
+                BathroomImageUrl = propertyDomain.BathroomImageUrl,
+                BedroomImageUrl = propertyDomain.BedroomImageUrl,
+                ParkingImageUrl = propertyDomain.ParkingImageUrl
+            };
+
+            // Return Dto response
+            return Ok(propertyDto);
         }
     }
 }
