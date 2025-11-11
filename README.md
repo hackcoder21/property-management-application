@@ -2,30 +2,8 @@
 A Property Management app built with Angular and ASP.NET Core. Users can register, log in, add their property details, upload images, edit or delete them, and download a formatted Excel report generated using EPPlus. Data is stored in SQL Server with EF Core, secured using JWT authentication.
 
 ER-Diagram
-┌──────────────────────┐ ┌──────────────────────────┐
-│ Users │ 1 ─── 1 │ Properties │
-├──────────────────────┤ ───────────────▶├──────────────────────────┤
-│ Id (PK) │ │ Id (PK) │
-│ FullName │ │ UserId (FK → Users.Id) │
-│ Email │ │ Title │
-└──────────────────────┘ │ Price │
-│ City │
-│ State │
-│ Locality │
-│ Pincode │
-│ NoOfRooms │
-│ CarpetAreaSqft │
-│ BuiltYear │
-│ NoOfBathrooms │
-│ Balcony │
-│ Parking │
-│ PropertyImageUrl │
-│ HallImageUrl │
-│ KitchenImageUrl │
-│ BathroomImageUrl │
-│ BedroomImageUrl │
-│ ParkingImageUrl │
-└──────────────────────────┘
+<img width="616" height="642" alt="image" src="https://github.com/user-attachments/assets/37a1bbb8-d5bb-4dc0-ba87-d6484a60c54d" />
+
 
 Users Table
 | Column Name      | Type                 | Nullable? | Notes                      |
