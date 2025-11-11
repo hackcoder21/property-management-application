@@ -8,15 +8,15 @@ ER-Diagram
 Users Table
 | Column Name      | Type                 | Nullable? | Notes                      |
 | ---------------- | -------------------- | --------- | -------------------------- |
-| Id               | INT                  | N         | Primary Key                |
+| Id               | GUID                 | N         | Primary Key                |
 | FullName         | NVARCHAR(150)        | N         | User's full name           |
 | Email            | NVARCHAR(150)        | N         | Used's Email               |
 
 Properties Table
 | Column Name      | Type                 | Nullable? | Notes                      |
 | ---------------- | -------------------- | --------- | -------------------------- |
-| Id               | INT                  | N         | Primary Key                |
-| UserId           | INT                  | N         | FK → Users.Id (1-to-1)     |
+| Id               | GUID                 | N         | Primary Key                |
+| UserId           | GUID                 | N         | FK → Users.Id (1-to-1)     |
 | Title            | NVARCHAR(500)        | N         | Property title             |
 | Price            | DECIMAL(18,2)        | N         | Property selling price     |
 | City             | NVARCHAR(100)        | N         | City                       |
