@@ -217,5 +217,49 @@ namespace PropertyManagement.API.Controllers
 
             return Ok(propertyDto);
         }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult DeleteProperty([FromRoute] Guid id)
+        {
+            // Check if property exists
+            var propertyDomain = dbContext.Properties.FirstOrDefault(x => x.Id == id);
+
+            if (propertyDomain == null)
+            {
+                return NotFound("Property not found");
+            }
+
+            // Delete property
+            dbContext.Properties.Remove(propertyDomain);
+            dbContext.SaveChanges();
+
+            // Return deleted property (Map domain to Dto)
+            var propertyDto = new PropertyDto
+            {
+                Id = propertyDomain.Id,
+                UserId = propertyDomain.UserId,
+                Title = propertyDomain.Title,
+                Price = propertyDomain.Price,
+                City = propertyDomain.City,
+                State = propertyDomain.State,
+                Locality = propertyDomain.Locality,
+                Pincode = propertyDomain.Pincode,
+                NoOfRooms = propertyDomain.NoOfRooms,
+                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
+                BuiltYear = propertyDomain.BuiltYear,
+                Balcony = propertyDomain.Balcony,
+                Parking = propertyDomain.Parking,
+                PropertyImageUrl = propertyDomain.PropertyImageUrl,
+                HallImageUrl = propertyDomain.HallImageUrl,
+                KitchenImageUrl = propertyDomain.KitchenImageUrl,
+                BathroomImageUrl = propertyDomain.BathroomImageUrl,
+                BedroomImageUrl = propertyDomain.BedroomImageUrl,
+                ParkingImageUrl = propertyDomain.ParkingImageUrl,
+                User = propertyDomain.User
+            };
+
+            return Ok(propertyDto);
+        }
     }
 }
