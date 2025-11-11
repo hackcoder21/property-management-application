@@ -2,30 +2,30 @@
 A Property Management app built with Angular and ASP.NET Core. Users can register, log in, add their property details, upload images, edit or delete them, and download a formatted Excel report generated using EPPlus. Data is stored in SQL Server with EF Core, secured using JWT authentication.
 
 ER-Diagram
-┌─────────────────────┐              ┌──────────────────────────┐
-│       Users         │   1 ─── 1    │        Properties        │
-├─────────────────────┤─────────────►├──────────────────────────┤
-│ Id (PK)             │              │ Id (PK)                  │
-│ FullName            │              │ UserId (FK → Users.Id)   │
-│ Email               │              │ Title                    │
-└─────────────────────┘              │ Price                    │
-                                     │ City                     │
-                                     │ State                    │
-                                     │ Locality                 │
-                                     │ Pincode                  │
-                                     │ NoOfRooms                │
-                                     │ CarpetAreaSqft           │
-                                     │ BuiltYear                │
-                                     │ NoOfBathrooms            │
-                                     │ Balcony                  │
-                                     │ Parking                  │
-                                     │ PropertyImageUrl         │
-                                     │ HallImageUrl             │
-                                     │ KitchenImageUrl          │
-                                     │ BathroomImageUrl         │
-                                     │ BedroomImageUrl          │
-                                     │ ParkingImageUrl          │
-                                     └──────────────────────────┘
+┌──────────────────────┐ ┌──────────────────────────┐
+│ Users │ 1 ─── 1 │ Properties │
+├──────────────────────┤ ───────────────▶├──────────────────────────┤
+│ Id (PK) │ │ Id (PK) │
+│ FullName │ │ UserId (FK → Users.Id) │
+│ Email │ │ Title │
+└──────────────────────┘ │ Price │
+│ City │
+│ State │
+│ Locality │
+│ Pincode │
+│ NoOfRooms │
+│ CarpetAreaSqft │
+│ BuiltYear │
+│ NoOfBathrooms │
+│ Balcony │
+│ Parking │
+│ PropertyImageUrl │
+│ HallImageUrl │
+│ KitchenImageUrl │
+│ BathroomImageUrl │
+│ BedroomImageUrl │
+│ ParkingImageUrl │
+└──────────────────────────┘
 
 Users Table
 | Column Name      | Type                 | Nullable? | Notes                      |
