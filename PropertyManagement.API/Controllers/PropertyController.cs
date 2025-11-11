@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PropertyManagement.API.Data;
 using PropertyManagement.API.Models.Domain;
 using PropertyManagement.API.Models.DTO;
@@ -19,10 +20,10 @@ namespace PropertyManagement.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProperties()
+        public async Task<IActionResult> GetAllProperties()
         {
             // Get data from database
-            var propertiesDomain = dbContext.Properties.ToList();
+            var propertiesDomain = await dbContext.Properties.ToListAsync();
 
             // Map domain model to DTO
             var propertiesDto = new List<PropertyDto>();
@@ -60,10 +61,10 @@ namespace PropertyManagement.API.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public IActionResult GetPropertyById([FromRoute] Guid id)
+        public async Task<IActionResult> GetPropertyById([FromRoute] Guid id)
         {
             // Get data from database
-            var propertyDomain = dbContext.Properties.FirstOrDefault(x => x.Id == id);
+            var propertyDomain = await dbContext.Properties.FirstOrDefaultAsync(x => x.Id == id);
 
             if (propertyDomain == null)
             {
@@ -100,7 +101,7 @@ namespace PropertyManagement.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProperty([FromBody] AddPropertyRequestDto addPropertyRequestDto)
+        public async Task<IActionResult> CreateProperty([FromBody] AddPropertyRequestDto addPropertyRequestDto)
         {
             // Map Dto to domain model
             var propertyDomain = new Property
@@ -126,8 +127,8 @@ namespace PropertyManagement.API.Controllers
             };
 
             // Create property and save to database
-            dbContext.Properties.Add(propertyDomain);
-            dbContext.SaveChanges();
+            await dbContext.Properties.AddAsync(propertyDomain);
+            await dbContext.SaveChangesAsync();
 
             // Map domain model to Dto
             var propertyDto = new PropertyDto
@@ -159,10 +160,10 @@ namespace PropertyManagement.API.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult UpdateProperty([FromRoute] Guid id, [FromBody] UpdatePropertyRequestDto updatePropertyRequestDto)
+        public async Task<IActionResult> UpdateProperty([FromRoute] Guid id, [FromBody] UpdatePropertyRequestDto updatePropertyRequestDto)
         {
             // Check if property exists
-            var propertyDomain = dbContext.Properties.FirstOrDefault(x => x.Id == id);
+            var propertyDomain = await dbContext.Properties.FirstOrDefaultAsync(x => x.Id == id);
 
             if (propertyDomain == null)
             {
@@ -188,7 +189,7 @@ namespace PropertyManagement.API.Controllers
             propertyDomain.BedroomImageUrl = updatePropertyRequestDto.BedroomImageUrl;
             propertyDomain.ParkingImageUrl = updatePropertyRequestDto.ParkingImageUrl;
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Map domain model to Dto
             var propertyDto = new PropertyDto
@@ -220,10 +221,10 @@ namespace PropertyManagement.API.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
-        public IActionResult DeleteProperty([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteProperty([FromRoute] Guid id)
         {
             // Check if property exists
-            var propertyDomain = dbContext.Properties.FirstOrDefault(x => x.Id == id);
+            var propertyDomain = await dbContext.Properties.FirstOrDefaultAsync(x => x.Id == id);
 
             if (propertyDomain == null)
             {
@@ -232,7 +233,7 @@ namespace PropertyManagement.API.Controllers
 
             // Delete property
             dbContext.Properties.Remove(propertyDomain);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Return deleted property (Map domain to Dto)
             var propertyDto = new PropertyDto
