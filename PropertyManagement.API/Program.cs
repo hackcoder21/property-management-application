@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PropertyManagement.API.Data;
+using PropertyManagement.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddDbContext<PMDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("PMConnectionString"));
 });
+
+// Add Repository
+builder.Services.AddScoped<IPropertyRepository, SQLPropertyRepository>();
 
 var app = builder.Build();
 
