@@ -2,7 +2,6 @@ namespace PropertyManagement.API.Models.DTO
 {
     public class UpdatePropertyRequestDto
     {
-        public Guid UserId { get; set; }
         public string Title { get; set; }
         public decimal Price { get; set; }
         public string City { get; set; }
