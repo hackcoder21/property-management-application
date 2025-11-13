@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,13 @@ namespace PropertyManagement.API.Controllers
     {
         private readonly PMDbContext dbContext;
         private readonly IPropertyRepository propertyRepository;
+        private readonly IMapper mapper;
 
-        public PropertyController(PMDbContext dbContext, IPropertyRepository propertyRepository)
+        public PropertyController(PMDbContext dbContext, IPropertyRepository propertyRepository, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.propertyRepository = propertyRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -29,37 +32,7 @@ namespace PropertyManagement.API.Controllers
             var propertiesDomain = await propertyRepository.GetAllPropertiesAsync();
 
             // Map domain model to DTO
-            var propertiesDto = new List<PropertyDto>();
-
-            foreach (var propertyDomain in propertiesDomain)
-            {
-                propertiesDto.Add(new PropertyDto()
-                {
-                    Id = propertyDomain.Id,
-                    UserId = propertyDomain.UserId,
-                    User = propertyDomain.User,
-                    Title = propertyDomain.Title,
-                    Price = propertyDomain.Price,
-                    City = propertyDomain.City,
-                    State = propertyDomain.State,
-                    Locality = propertyDomain.Locality,
-                    Pincode = propertyDomain.Pincode,
-                    NoOfRooms = propertyDomain.NoOfRooms,
-                    CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
-                    BuiltYear = propertyDomain.BuiltYear,
-                    Balcony = propertyDomain.Balcony,
-                    Parking = propertyDomain.Parking,
-                    PropertyImageUrl = propertyDomain.PropertyImageUrl,
-                    HallImageUrl = propertyDomain.HallImageUrl,
-                    KitchenImageUrl = propertyDomain.KitchenImageUrl,
-                    BathroomImageUrl = propertyDomain.BathroomImageUrl,
-                    BedroomImageUrl = propertyDomain.BedroomImageUrl,
-                    ParkingImageUrl = propertyDomain.ParkingImageUrl
-                });
-            }
-
-            // Return Dto response
-            return Ok(propertiesDto);
+            return Ok(mapper.Map<List<PropertyDto>>(propertiesDomain));
         }
 
         [HttpGet]
@@ -75,87 +48,20 @@ namespace PropertyManagement.API.Controllers
             }
 
             // Map domain model to Dto
-            var propertyDto = new PropertyDto
-            {
-                Id = propertyDomain.Id,
-                UserId = propertyDomain.UserId,
-                User = propertyDomain.User,
-                Title = propertyDomain.Title,
-                Price = propertyDomain.Price,
-                City = propertyDomain.City,
-                State = propertyDomain.State,
-                Locality = propertyDomain.Locality,
-                Pincode = propertyDomain.Pincode,
-                NoOfRooms = propertyDomain.NoOfRooms,
-                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
-                BuiltYear = propertyDomain.BuiltYear,
-                Balcony = propertyDomain.Balcony,
-                Parking = propertyDomain.Parking,
-                PropertyImageUrl = propertyDomain.PropertyImageUrl,
-                HallImageUrl = propertyDomain.HallImageUrl,
-                KitchenImageUrl = propertyDomain.KitchenImageUrl,
-                BathroomImageUrl = propertyDomain.BathroomImageUrl,
-                BedroomImageUrl = propertyDomain.BedroomImageUrl,
-                ParkingImageUrl = propertyDomain.ParkingImageUrl
-            };
-
-            // Return Dto response
-            return Ok(propertyDto);
+            return Ok(mapper.Map<PropertyDto>(propertyDomain));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateProperty([FromBody] AddPropertyRequestDto addPropertyRequestDto)
         {
             // Map Dto to domain model
-            var propertyDomain = new Property
-            {
-                UserId = addPropertyRequestDto.UserId,
-                Title = addPropertyRequestDto.Title,
-                Price = addPropertyRequestDto.Price,
-                City = addPropertyRequestDto.City,
-                State = addPropertyRequestDto.State,
-                Locality = addPropertyRequestDto.Locality,
-                Pincode = addPropertyRequestDto.Pincode,
-                NoOfRooms = addPropertyRequestDto.NoOfRooms,
-                CarpetAreaSqft = addPropertyRequestDto.CarpetAreaSqft,
-                BuiltYear = addPropertyRequestDto.BuiltYear,
-                Balcony = addPropertyRequestDto.Balcony,
-                Parking = addPropertyRequestDto.Parking,
-                PropertyImageUrl = addPropertyRequestDto.PropertyImageUrl,
-                HallImageUrl = addPropertyRequestDto.HallImageUrl,
-                KitchenImageUrl = addPropertyRequestDto.KitchenImageUrl,
-                BathroomImageUrl = addPropertyRequestDto.BathroomImageUrl,
-                BedroomImageUrl = addPropertyRequestDto.BedroomImageUrl,
-                ParkingImageUrl = addPropertyRequestDto.ParkingImageUrl
-            };
+            var propertyDomain = mapper.Map<Property>(addPropertyRequestDto);
 
             // Create property and save to database
             propertyDomain = await propertyRepository.CreatePropertyAsync(propertyDomain);
 
             // Map domain model to Dto
-            var propertyDto = new PropertyDto
-            {
-                Id = propertyDomain.Id,
-                UserId = propertyDomain.UserId,
-                User = propertyDomain.User,
-                Title = propertyDomain.Title,
-                Price = propertyDomain.Price,
-                City = propertyDomain.City,
-                State = propertyDomain.State,
-                Locality = propertyDomain.Locality,
-                Pincode = propertyDomain.Pincode,
-                NoOfRooms = propertyDomain.NoOfRooms,
-                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
-                BuiltYear = propertyDomain.BuiltYear,
-                Balcony = propertyDomain.Balcony,
-                Parking = propertyDomain.Parking,
-                PropertyImageUrl = propertyDomain.PropertyImageUrl,
-                HallImageUrl = propertyDomain.HallImageUrl,
-                KitchenImageUrl = propertyDomain.KitchenImageUrl,
-                BathroomImageUrl = propertyDomain.BathroomImageUrl,
-                BedroomImageUrl = propertyDomain.BedroomImageUrl,
-                ParkingImageUrl = propertyDomain.ParkingImageUrl
-            };
+            var propertyDto = mapper.Map<PropertyDto>(propertyDomain);
 
             return CreatedAtAction(nameof(GetPropertyById), new { id = propertyDto.Id }, propertyDto);
         }
@@ -165,26 +71,7 @@ namespace PropertyManagement.API.Controllers
         public async Task<IActionResult> UpdateProperty([FromRoute] Guid id, [FromBody] UpdatePropertyRequestDto updatePropertyRequestDto)
         {
             // Map Dto to domain model
-            var propertyDomain = new Property
-            {
-                Title = updatePropertyRequestDto.Title,
-                Price = updatePropertyRequestDto.Price,
-                City = updatePropertyRequestDto.City,
-                State = updatePropertyRequestDto.State,
-                Locality = updatePropertyRequestDto.Locality,
-                Pincode = updatePropertyRequestDto.Pincode,
-                NoOfRooms = updatePropertyRequestDto.NoOfRooms,
-                CarpetAreaSqft = updatePropertyRequestDto.CarpetAreaSqft,
-                BuiltYear = updatePropertyRequestDto.BuiltYear,
-                Balcony = updatePropertyRequestDto.Balcony,
-                Parking = updatePropertyRequestDto.Parking,
-                PropertyImageUrl = updatePropertyRequestDto.PropertyImageUrl,
-                HallImageUrl = updatePropertyRequestDto.HallImageUrl,
-                KitchenImageUrl = updatePropertyRequestDto.KitchenImageUrl,
-                BathroomImageUrl = updatePropertyRequestDto.BathroomImageUrl,
-                BedroomImageUrl = updatePropertyRequestDto.BedroomImageUrl,
-                ParkingImageUrl = updatePropertyRequestDto.ParkingImageUrl
-            };
+            var propertyDomain = mapper.Map<Property>(updatePropertyRequestDto);
 
             // Check if property exists
             propertyDomain = await propertyRepository.UpdatePropertyAsync(id, propertyDomain);
@@ -195,31 +82,7 @@ namespace PropertyManagement.API.Controllers
             }
 
             // Map domain model to Dto
-            var propertyDto = new PropertyDto
-            {
-                Id = propertyDomain.Id,
-                UserId = propertyDomain.UserId,
-                Title = propertyDomain.Title,
-                Price = propertyDomain.Price,
-                City = propertyDomain.City,
-                State = propertyDomain.State,
-                Locality = propertyDomain.Locality,
-                Pincode = propertyDomain.Pincode,
-                NoOfRooms = propertyDomain.NoOfRooms,
-                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
-                BuiltYear = propertyDomain.BuiltYear,
-                Balcony = propertyDomain.Balcony,
-                Parking = propertyDomain.Parking,
-                PropertyImageUrl = propertyDomain.PropertyImageUrl,
-                HallImageUrl = propertyDomain.HallImageUrl,
-                KitchenImageUrl = propertyDomain.KitchenImageUrl,
-                BathroomImageUrl = propertyDomain.BathroomImageUrl,
-                BedroomImageUrl = propertyDomain.BedroomImageUrl,
-                ParkingImageUrl = propertyDomain.ParkingImageUrl,
-                User = propertyDomain.User
-            };
-
-            return Ok(propertyDto);
+            return Ok(mapper.Map<PropertyDto>(propertyDomain));
         }
 
         [HttpDelete]
@@ -235,31 +98,7 @@ namespace PropertyManagement.API.Controllers
             }
 
             // Return deleted property (Map domain to Dto)
-            var propertyDto = new PropertyDto
-            {
-                Id = propertyDomain.Id,
-                UserId = propertyDomain.UserId,
-                Title = propertyDomain.Title,
-                Price = propertyDomain.Price,
-                City = propertyDomain.City,
-                State = propertyDomain.State,
-                Locality = propertyDomain.Locality,
-                Pincode = propertyDomain.Pincode,
-                NoOfRooms = propertyDomain.NoOfRooms,
-                CarpetAreaSqft = propertyDomain.CarpetAreaSqft,
-                BuiltYear = propertyDomain.BuiltYear,
-                Balcony = propertyDomain.Balcony,
-                Parking = propertyDomain.Parking,
-                PropertyImageUrl = propertyDomain.PropertyImageUrl,
-                HallImageUrl = propertyDomain.HallImageUrl,
-                KitchenImageUrl = propertyDomain.KitchenImageUrl,
-                BathroomImageUrl = propertyDomain.BathroomImageUrl,
-                BedroomImageUrl = propertyDomain.BedroomImageUrl,
-                ParkingImageUrl = propertyDomain.ParkingImageUrl,
-                User = propertyDomain.User
-            };
-
-            return Ok(propertyDto);
+            return Ok(mapper.Map<PropertyDto>(propertyDomain));
         }
     }
 }

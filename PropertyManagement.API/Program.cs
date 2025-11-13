@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PropertyManagement.API.Data;
+using PropertyManagement.API.Mappings;
 using PropertyManagement.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,9 @@ builder.Services.AddDbContext<PMDbContext>(options =>
 
 // Add Repository
 builder.Services.AddScoped<IPropertyRepository, SQLPropertyRepository>();
+
+// Add Automapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
