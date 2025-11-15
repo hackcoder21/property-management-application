@@ -36,12 +36,12 @@ namespace PropertyManagement.API.Repositories
 
         public async Task<List<Property>> GetAllPropertiesAsync()
         {
-            return await dbContext.Properties.ToListAsync();
+            return await dbContext.Properties.Include("User").ToListAsync();
         }
 
         public async Task<Property?> GetPropertyByIdAsync(Guid id)
         {
-            return await dbContext.Properties.FirstOrDefaultAsync(x => x.Id == id);
+            return await dbContext.Properties.Include("User").FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Property?> UpdatePropertyAsync(Guid id, Property property)

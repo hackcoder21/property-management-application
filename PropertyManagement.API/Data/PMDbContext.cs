@@ -14,6 +14,12 @@ namespace PropertyManagement.API.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Property>()
+                .HasOne(u => u.User)
+                .WithMany(p => p.Properties)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Seed data for User
             var user = new User()
             {
