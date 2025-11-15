@@ -59,11 +59,15 @@ namespace PropertyManagement.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "FullName" },
+                values: new object[] { new Guid("b3b9f0e6-11d6-4815-8d36-30f52bf61c61"), "user@user.com", "user" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_UserId",
                 table: "Properties",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
         }
 
         /// <inheritdoc />

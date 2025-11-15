@@ -12,7 +12,7 @@ using PropertyManagement.API.Data;
 namespace PropertyManagement.API.Migrations
 {
     [DbContext(typeof(PMDbContext))]
-    [Migration("20251111181352_Initial Migration")]
+    [Migration("20251115134955_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -92,8 +92,7 @@ namespace PropertyManagement.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Properties");
                 });
@@ -115,13 +114,21 @@ namespace PropertyManagement.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b3b9f0e6-11d6-4815-8d36-30f52bf61c61"),
+                            Email = "user@user.com",
+                            FullName = "user"
+                        });
                 });
 
             modelBuilder.Entity("PropertyManagement.API.Models.Domain.Property", b =>
                 {
                     b.HasOne("PropertyManagement.API.Models.Domain.User", "User")
-                        .WithOne("Property")
-                        .HasForeignKey("PropertyManagement.API.Models.Domain.Property", "UserId")
+                        .WithMany("Properties")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -130,8 +137,7 @@ namespace PropertyManagement.API.Migrations
 
             modelBuilder.Entity("PropertyManagement.API.Models.Domain.User", b =>
                 {
-                    b.Navigation("Property")
-                        .IsRequired();
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }
