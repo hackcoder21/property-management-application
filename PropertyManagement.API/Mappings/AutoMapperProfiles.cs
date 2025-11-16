@@ -26,6 +26,12 @@ namespace PropertyManagement.API.Mappings
                     opt => opt.MapFrom(src => src.Properties));
 
             CreateMap<Property, UserPropertySummaryDto>();
+
+            CreateMap<User, PropertyUserSummaryDto>();
+
+            CreateMap<Property, PropertyDto>()
+                .ForMember(dest => dest.User,
+                    opt => opt.MapFrom(src => src.User));
         }
     }
 }
