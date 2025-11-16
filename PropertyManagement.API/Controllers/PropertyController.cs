@@ -14,17 +14,16 @@ namespace PropertyManagement.API.Controllers
     [ApiController]
     public class PropertyController : ControllerBase
     {
-        private readonly PMDbContext dbContext;
         private readonly IPropertyRepository propertyRepository;
         private readonly IMapper mapper;
 
-        public PropertyController(PMDbContext dbContext, IPropertyRepository propertyRepository, IMapper mapper)
+        public PropertyController(IPropertyRepository propertyRepository, IMapper mapper)
         {
-            this.dbContext = dbContext;
             this.propertyRepository = propertyRepository;
             this.mapper = mapper;
         }
 
+        // Get All Properties
         [HttpGet]
         public async Task<IActionResult> GetAllProperties()
         {
@@ -35,6 +34,7 @@ namespace PropertyManagement.API.Controllers
             return Ok(mapper.Map<List<PropertyDto>>(propertiesDomain));
         }
 
+        // Get Property By Id
         [HttpGet]
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetPropertyById([FromRoute] Guid id)
@@ -51,6 +51,7 @@ namespace PropertyManagement.API.Controllers
             return Ok(mapper.Map<PropertyDto>(propertyDomain));
         }
 
+        // Create Property
         [HttpPost]
         public async Task<IActionResult> CreateProperty([FromBody] AddPropertyRequestDto addPropertyRequestDto)
         {
@@ -66,6 +67,7 @@ namespace PropertyManagement.API.Controllers
             return CreatedAtAction(nameof(GetPropertyById), new { id = propertyDto.Id }, propertyDto);
         }
 
+        // Update Property
         [HttpPut]
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateProperty([FromRoute] Guid id, [FromBody] UpdatePropertyRequestDto updatePropertyRequestDto)
@@ -85,6 +87,7 @@ namespace PropertyManagement.API.Controllers
             return Ok(mapper.Map<PropertyDto>(propertyDomain));
         }
 
+        // Delete Property
         [HttpDelete]
         [Route("{id:Guid}")]
         public async Task<IActionResult> DeleteProperty([FromRoute] Guid id)

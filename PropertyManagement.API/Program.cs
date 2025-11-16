@@ -20,6 +20,7 @@ builder.Services.AddDbContext<PMDbContext>(options =>
 
 // Add Repository
 builder.Services.AddScoped<IPropertyRepository, SQLPropertyRepository>();
+builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
 
 // Add Automapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));

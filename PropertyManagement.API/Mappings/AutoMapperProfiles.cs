@@ -8,9 +8,24 @@ namespace PropertyManagement.API.Mappings
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Property, PropertyDto>().ReverseMap();
-            CreateMap<AddPropertyRequestDto, Property>().ReverseMap();
-            CreateMap<UpdatePropertyRequestDto, Property>().ReverseMap();
+            // Property
+            CreateMap<Property, PropertyDto>();
+
+            CreateMap<AddPropertyRequestDto, Property>();
+
+            CreateMap<UpdatePropertyRequestDto, Property>();
+
+            // User
+            CreateMap<User, UserDto>();
+
+            CreateMap<AddUserRequestDto, User>();
+
+            CreateMap<User, UserDetailsDto>()
+                .ForMember(
+                    dest => dest.Properties,
+                    opt => opt.MapFrom(src => src.Properties));
+
+            CreateMap<Property, UserPropertySummaryDto>();
         }
     }
 }
