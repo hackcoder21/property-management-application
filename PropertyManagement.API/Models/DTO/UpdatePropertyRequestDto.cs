@@ -38,7 +38,6 @@ namespace PropertyManagement.API.Models.DTO
         public int NoOfRooms { get; set; }
 
         [Required]
-        [Range(50, 20000, ErrorMessage = "Carpet area must be between 50 and 20,000 Sqft.")]
         public float CarpetAreaSqft { get; set; }
 
         [Required]
