@@ -26,10 +26,16 @@ namespace PropertyManagement.API.Controllers
 
         // Get All Properties
         [HttpGet]
-        public async Task<IActionResult> GetAllProperties()
+        public async Task<IActionResult> GetAllProperties(
+            [FromQuery] string? filterOn, 
+            [FromQuery] string? filterQuery, 
+            [FromQuery] string? sortBy, 
+            [FromQuery] bool? isAscending,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             // Get data from database
-            var propertiesDomain = await propertyRepository.GetAllPropertiesAsync();
+            var propertiesDomain = await propertyRepository.GetAllPropertiesAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
 
             // Map domain model to DTO
             return Ok(mapper.Map<List<PropertyDto>>(propertiesDomain));
