@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PropertyManagement.API.CustomActionFilters;
 using PropertyManagement.API.Data;
 using PropertyManagement.API.Models.Domain;
 using PropertyManagement.API.Models.DTO;
@@ -53,6 +54,7 @@ namespace PropertyManagement.API.Controllers
 
         // Create Property
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateProperty([FromBody] AddPropertyRequestDto addPropertyRequestDto)
         {
             // Map Dto to domain model
@@ -70,6 +72,7 @@ namespace PropertyManagement.API.Controllers
         // Update Property
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateProperty([FromRoute] Guid id, [FromBody] UpdatePropertyRequestDto updatePropertyRequestDto)
         {
             // Map Dto to domain model

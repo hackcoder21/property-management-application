@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PropertyManagement.API.CustomActionFilters;
 using PropertyManagement.API.Models.Domain;
 using PropertyManagement.API.Models.DTO;
 using PropertyManagement.API.Repositories;
@@ -22,6 +23,7 @@ namespace PropertyManagement.API.Controllers
 
         // Create User
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateUser([FromBody] AddUserRequestDto addUserRequestDto)
         {
             // Map Dto to domain model
