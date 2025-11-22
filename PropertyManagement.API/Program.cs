@@ -1,6 +1,7 @@
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using OfficeOpenXml;
 using PropertyManagement.API.Data;
 using PropertyManagement.API.Mappings;
 using PropertyManagement.API.Models.Cloudinary;
@@ -50,6 +51,8 @@ builder.Services.AddSingleton(provider =>
 builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
 var app = builder.Build();
+
+ExcelPackage.License.SetNonCommercialPersonal("Rajat Jadhav");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
