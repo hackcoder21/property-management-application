@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using PropertyManagement.API.Repositories;
+using System.Data;
 
 namespace PropertyManagement.API.Services
 {
@@ -48,24 +49,90 @@ namespace PropertyManagement.API.Services
 
         private void CreateReport(ExcelPackage package, Guid userId)
         {
+            // Variables
+            string spPortfolio = "dbo.sp_GetPortfolioData";
+            string spProperty = "dbo.sp_GetPropertyData";
+
             // Select raw worksheets
             var inputRawSheet = package.Workbook.Worksheets["INPUT_Raw"];
-            var inputPortfolioRawSheet = package.Workbook.Worksheets["Portfolio_Raw"];
-            var inputPropertyRawSheet = package.Workbook.Worksheets["Property_Raw"];
+            var portfolioRawSheet = package.Workbook.Worksheets["Portfolio_Raw"];
+            var propertyRawSheet = package.Workbook.Worksheets["Property_Raw"];
 
             // Select worksheets
-            var inputPortfolioSheet = package.Workbook.Worksheets["Portfolio"];
-            var inputPropertySheet = package.Workbook.Worksheets["Property"];
+            var portfolioSheet = package.Workbook.Worksheets["Portfolio"];
+            var propertySheet = package.Workbook.Worksheets["Property"];
 
             // Hide raw sheets
             foreach (var ws in package.Workbook.Worksheets)
             {
-                inputPortfolioSheet.Select();
+                portfolioSheet.Select();
 
                 if (ws.Name.EndsWith("_Raw", StringComparison.OrdinalIgnoreCase))
                 {
                     ws.Hidden = eWorkSheetHidden.Hidden;
                 }
+            }
+
+            // Populate Portfolio data
+            PopulatePortfolioData(package.Workbook, portfolioRawSheet, portfolioSheet, spPortfolio, userId);
+
+            // Populate Property data
+            PopulatePropertyData(package.Workbook, propertyRawSheet, propertySheet, spProperty, userId);
+        }
+
+        private void PopulatePortfolioData(ExcelWorkbook workbook, ExcelWorksheet portfolioRawSheet, ExcelWorksheet portfolioSheet, string spPortfolio, Guid userId)
+        {
+            try
+            {
+                using var ds = reportRepository.GetDataSet(spPortfolio, userId);
+                var dt1 = ds.Tables[0];
+                var dt2 = ds.Tables[1];
+
+                // Portfolio KPIs
+                if (dt1 != null && dt1.Rows.Count > 0)
+                {
+                    var data = dt1.AsEnumerable().Select(row => dt1.Columns.Cast<DataColumn>().Select(col => row[col]).ToArray()).ToArray();
+
+                    var startRow = 2;
+                    var startCol = 1;
+                    portfolioRawSheet.Cells[startRow, startCol].LoadFromArrays(data);
+                }
+
+                // Portfolio Chart
+                if (dt2 != null && dt2.Rows.Count > 0)
+                {
+                    var data = dt2.AsEnumerable().Select(row => dt2.Columns.Cast<DataColumn>().Select(col => row[col]).ToArray()).ToArray();
+
+                    var startRow = 2;
+                    var startCol = 4;
+                    portfolioRawSheet.Cells[startRow, startCol].LoadFromArrays(data);
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        private void PopulatePropertyData(ExcelWorkbook workbook, ExcelWorksheet propertyRawSheet, ExcelWorksheet propertySheet, string spProperty, Guid userId)
+        {
+            try
+            {
+                using var dt = reportRepository.GetDataTable(spProperty, userId);
+
+                // Property data
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var data = dt.AsEnumerable().Select(row => dt.Columns.Cast<DataColumn>().Select(col => row[col]).ToArray()).ToArray();
+
+                    var startRow = 2;
+                    var startCol = 1;
+                    propertyRawSheet.Cells[startRow, startCol].LoadFromArrays(data);
+                }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
     }

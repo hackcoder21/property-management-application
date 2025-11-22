@@ -12,7 +12,7 @@ namespace PropertyManagement.API.Repositories
             _connectionString = configuration.GetConnectionString("PMConnectionString");
         }
 
-        public DataSet GetDataSet(string sp, string userId)
+        public DataSet GetDataSet(string sp, Guid userId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
@@ -34,7 +34,7 @@ namespace PropertyManagement.API.Repositories
             }
         }
 
-        public DataTable GetDataTable(string sp, string userId)
+        public DataTable GetDataTable(string sp, Guid userId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {

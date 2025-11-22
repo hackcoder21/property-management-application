@@ -38,7 +38,9 @@ namespace PropertyManagement.API.Services
                     File = new FileDescription(file.FileName, stream),
                     Folder = folder,
                     UseFilename = true,
-                    UniqueFilename = false
+                    UniqueFilename = false,
+                    Overwrite = true,
+                    Invalidate = true
                 };
 
                 var uploadResult = await cloudinary.UploadAsync(uploadParams);
@@ -58,7 +60,9 @@ namespace PropertyManagement.API.Services
                     File = new FileDescription(file.FileName, stream),
                     Folder = folder,
                     UseFilename = true,
-                    UniqueFilename = false
+                    UniqueFilename = false,
+                    Overwrite = true,
+                    Invalidate = true
                 };
 
                 var uploadResult = await cloudinary.UploadAsync(uploadParams);
@@ -75,7 +79,9 @@ namespace PropertyManagement.API.Services
         public async Task<Stream> DownloadFileAsync(string publicId)
         {
             var http = new HttpClient();
+
             var rawUrl = cloudinary.Api.Url.ResourceType("raw").Action("upload").BuildUrl(publicId);
+
             var imageUrl = cloudinary.Api.Url.ResourceType("image").Action("upload").BuildUrl(publicId);
 
             try

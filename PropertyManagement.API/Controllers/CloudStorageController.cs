@@ -42,9 +42,13 @@ namespace PropertyManagement.API.Controllers
         [HttpGet("download/{publicId}")]
         public async Task<IActionResult> DownloadFromCloudinary(string publicId)
         {
+            publicId = Uri.UnescapeDataString(publicId);
+
+            string fileName = publicId.Contains('/') ? publicId.Split('/').Last() : publicId;
+
             var stream = await cloudStorageService.DownloadFileAsync(publicId);
 
-            return File(((MemoryStream)stream).ToArray(), "application/octet-stream", "downloaded_file");
+            return File(((MemoryStream)stream).ToArray(), "application/octet-stream", fileName);
         }
 
         [HttpDelete("delete/{publicId}")]
