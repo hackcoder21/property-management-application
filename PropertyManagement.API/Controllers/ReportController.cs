@@ -22,7 +22,8 @@ namespace PropertyManagement.API.Controllers
         {
             var contentBytes = await reportService.GeneratePropertyPortfolioReport(userId);
 
-            var fileName = $"PropertyPortfolio_{DateTime.Now:yyyyMMdd}.xlsx";
+            var fileName = $"PropertyPortfolioReport_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
             return File(contentBytes, contentType, fileName);

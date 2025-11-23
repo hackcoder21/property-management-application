@@ -80,20 +80,16 @@ namespace PropertyManagement.API.Services
         {
             var http = new HttpClient();
 
-            var rawUrl = cloudinary.Api.Url.ResourceType("raw").Action("upload").BuildUrl(publicId);
-
-            var imageUrl = cloudinary.Api.Url.ResourceType("image").Action("upload").BuildUrl(publicId);
-
-            try
+            var resource = await cloudinary.GetResourceAsync(new GetResourceParams(publicId)
             {
-                var rawBytes = await http.GetByteArrayAsync(rawUrl);
-                return new MemoryStream(rawBytes);
-            }
-            catch
-            {
-                var imgBytes = await http.GetByteArrayAsync(imageUrl);
-                return new MemoryStream(imgBytes);
-            }
+                ResourceType = ResourceType.Raw
+            });
+
+            string downloadUrl = resource.SecureUrl;
+
+            var bytes = await http.GetByteArrayAsync(downloadUrl);
+
+            return new MemoryStream(bytes);
         }
 
         public async Task<bool> DeleteFileAsync(string publicId)
