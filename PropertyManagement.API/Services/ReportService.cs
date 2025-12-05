@@ -175,14 +175,131 @@ namespace PropertyManagement.API.Services
                 // Get data table
                 using var dt = reportRepository.GetDataTable(spProperty, userId);
 
-                // Add data to raw sheet
-                if (dt != null && dt.Rows.Count > 0)
+                // Return if data table is empty
+                if (dt == null && dt!.Rows.Count == 0)
                 {
-                    var data = dt.AsEnumerable().Select(row => dt.Columns.Cast<DataColumn>().Select(col => row[col]).ToArray()).ToArray();
+                    return;
+                }
 
-                    var startRow = 2;
-                    var startCol = 1;
-                    propertyRawSheet.Cells[startRow, startCol].LoadFromArrays(data);
+                // Add data to raw sheet
+                var data = dt.AsEnumerable().Select(row => dt.Columns.Cast<DataColumn>().Select(col => row[col]).ToArray()).ToArray();
+
+                var startRow = 2;
+                var startCol = 1;
+                propertyRawSheet.Cells[startRow, startCol].LoadFromArrays(data);
+
+                // Add data to main sheet
+                var rangeBaseNames = new string[]
+                {
+                    "Property_Title",
+                    "Property_Address",
+                    "Property_Price",
+                    "Property_NoOfRooms",
+                    "Property_CarpetAreaSqft",
+                    "Property_BuildYear",
+                    "Property_Features",
+                    "Property_Img_Property",
+                    "Property_Img_LivingRoom",
+                    "Property_Img_Kitchen",
+                    "Property_Img_Bedroom",
+                    "Property_Img_Bathroom",
+                    "Property_Img_Parking"
+                };
+
+                int rowsCount = dt.Rows.Count;
+
+                string baseName = propertySheet.Name;
+
+                for (int i = 0; i < rowsCount; i++)
+                {
+                    int pageIndex = i + 1;
+                    string newSheetName = $"{baseName}_{pageIndex}";
+
+                    var targetSheet = workbook.Worksheets.Add(newSheetName, propertySheet);
+
+                    var row = dt.Rows[i];
+
+                    foreach (var rangeBase in rangeBaseNames)
+                    {
+                        try
+                        {
+                            ExcelNamedRange originalNamedRange = null;
+
+                            if (workbook.Names.ContainsKey(rangeBase))
+                            {
+                                originalNamedRange = workbook.Names[rangeBase];
+                            }
+                            else if (propertySheet.Names.ContainsKey(rangeBase))
+                            {
+                                originalNamedRange = propertySheet.Names[rangeBase];
+                            }
+
+                            string rawAddress = originalNamedRange!.Address ?? string.Empty;
+
+                            if (rawAddress.Contains('!'))
+                            {
+                                rawAddress = rawAddress.Substring(rawAddress.IndexOf('!') + 1);
+                            }
+
+                            rawAddress = rawAddress.Trim().Trim('\'');
+
+                            string perPageRangeName = $"{rangeBase}_{pageIndex}";
+
+                            workbook.Names.Add(perPageRangeName, targetSheet.Cells[rawAddress]);
+
+                            var targetCell = targetSheet.Cells[rawAddress];
+
+                            string columnName = rangeBase switch
+                            {
+                                "Property_Title" => "Title",
+                                "Property_Address" => "Address",
+                                "Property_Price" => "Price",
+                                "Property_NoOfRooms" => "NoOfRooms",
+                                "Property_CarpetAreaSqft" => "CarpetAreaSqft",
+                                "Property_BuildYear" => "BuiltYear",
+                                "Property_Features" => "Features",
+                                "Property_Img_Property" => "PropertyImageUrl",
+                                "Property_Img_LivingRoom" => "HallImageUrl",
+                                "Property_Img_Kitchen" => "KitchenImageUrl",
+                                "Property_Img_Bedroom" => "BedroomImageUrl",
+                                "Property_Img_Bathroom" => "BathroomImageUrl",
+                                "Property_Img_Parking" => "ParkingImageUrl",
+                                _ => null
+                            };
+
+                            object cellValueObj = row.Table.Columns.Contains(columnName) ? row[columnName] : null;
+
+                            if (cellValueObj == null || cellValueObj == DBNull.Value)
+                            {
+                                targetCell.Value = null;
+                                continue;
+                            }
+
+                            if (columnName.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var dec = Convert.ToDecimal(cellValueObj);
+                                targetCell.Value = dec;
+                                targetCell.Style.Numberformat.Format = "#,##0";
+                            }
+                            else if (columnName.Equals("NoOfRooms", StringComparison.OrdinalIgnoreCase) ||
+                                     columnName.Equals("CarpetAreaSqft", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var intVal = Convert.ToInt32(cellValueObj);
+                                targetCell.Value = intVal;
+                                targetCell.Style.Numberformat.Format = "#,##0";
+                            }
+                            else
+                            {
+                                targetCell.Value = cellValueObj.ToString();
+                            }
+
+                            propertySheet.Hidden = eWorkSheetHidden.Hidden;
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
             catch (Exception)
