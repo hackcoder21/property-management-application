@@ -76,6 +76,40 @@ namespace PropertyManagement.API.Services
             }
         }
 
+        public async Task<(string PublicId, string Url)> UploadImageAsync(IFormFile file, string folder)
+        {
+            if (file == null || file.Length == 0)
+            {
+                throw new ArgumentException("File is empty", nameof(file));
+            }
+
+            using var stream = file.OpenReadStream();
+
+            folder ??= "images";
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(file.FileName, stream),
+                Folder = folder,
+                UseFilename = true,
+                UniqueFilename = false,
+                Overwrite = true,
+                Invalidate = true
+            };
+
+            var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult == null || uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new Exception("Failed to upload image to Cloudinary");
+            }
+
+            var publicId = uploadResult.PublicId;
+            var url = uploadResult.SecureUrl?.ToString() ?? uploadResult.Url?.ToString();
+
+            return (publicId, url);
+        }
+
         public async Task<Stream> DownloadFileAsync(string publicId)
         {
             var http = new HttpClient();

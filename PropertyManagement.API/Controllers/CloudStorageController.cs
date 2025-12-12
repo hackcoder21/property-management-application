@@ -39,6 +39,24 @@ namespace PropertyManagement.API.Controllers
             });
         }
 
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImageToCloudinary([FromForm] FileUploadRequest request)
+        {
+            if (request?.File == null || request.File.Length == 0)
+            {
+                return BadRequest("Please upload a valid image file.");
+            }
+
+            var (publicId, url) = await cloudStorageService.UploadImageAsync(request.File, folder: "property-images");
+
+            return Ok(new
+            {
+                message = "Image uploaded successfully",
+                publicId,
+                url
+            });
+        }
+
         [HttpGet("download/{publicId}")]
         public async Task<IActionResult> DownloadFromCloudinary(string publicId)
         {
