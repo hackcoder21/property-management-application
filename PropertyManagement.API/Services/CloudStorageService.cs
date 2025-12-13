@@ -128,22 +128,50 @@ namespace PropertyManagement.API.Services
 
         public async Task<bool> DeleteFileAsync(string publicId)
         {
-            var rawResult = await cloudinary.DestroyAsync(new DeletionParams(publicId)
-            {
-                ResourceType = ResourceType.Raw
-            });
+            if (string.IsNullOrWhiteSpace(publicId))
+                return false;
 
-            if (rawResult.Result == "ok")
-            {
-                return true;
-            }
-
-            var imageResult = await cloudinary.DestroyAsync(new DeletionParams(publicId)
+            // First check if the file exists + detect resource type
+            var getParams = new GetResourceParams(publicId)
             {
                 ResourceType = ResourceType.Image
-            });
+            };
 
-            return imageResult.Result == "ok";
+            var imageInfo = await cloudinary.GetResourceAsync(getParams);
+
+            if (imageInfo?.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                // File is an IMAGE → delete as image
+                var deleteImage = await cloudinary.DestroyAsync(
+                    new DeletionParams(publicId)
+                    {
+                        ResourceType = ResourceType.Image
+                    });
+
+                return deleteImage.Result == "ok" || deleteImage.Result == "not found";
+            }
+
+            // Try raw resource lookup
+            var rawInfo = await cloudinary.GetResourceAsync(
+                new GetResourceParams(publicId)
+                {
+                    ResourceType = ResourceType.Raw
+                });
+
+            if (rawInfo?.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                // File is RAW → delete as raw
+                var deleteRaw = await cloudinary.DestroyAsync(
+                    new DeletionParams(publicId)
+                    {
+                        ResourceType = ResourceType.Raw
+                    });
+
+                return deleteRaw.Result == "ok" || deleteRaw.Result == "not found";
+            }
+
+            // If neither image nor raw exists → treat as deleted
+            return true;
         }
     }
 }
