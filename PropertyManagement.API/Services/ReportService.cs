@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
 using PropertyManagement.API.Repositories;
+using SkiaSharp;
 using System.Data;
 
 namespace PropertyManagement.API.Services
@@ -9,11 +10,13 @@ namespace PropertyManagement.API.Services
     {
         private readonly IReportRepository reportRepository;
         private readonly ICloudStorageService cloudStorageService;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public ReportService(IReportRepository reportRepository, ICloudStorageService cloudStorageService)
+        public ReportService(IReportRepository reportRepository, ICloudStorageService cloudStorageService, IHttpClientFactory httpClientFactory)
         {
             this.reportRepository = reportRepository;
             this.cloudStorageService = cloudStorageService;
+            this.httpClientFactory = httpClientFactory;
         }
 
         public async Task<byte[]> GeneratePropertyPortfolioReport(Guid userId)
@@ -275,22 +278,59 @@ namespace PropertyManagement.API.Services
                                 continue;
                             }
 
-                            if (columnName.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                            if (columnName.Equals("PropertyImageUrl", StringComparison.OrdinalIgnoreCase) || 
+                                columnName.Equals("HallImageUrl", StringComparison.OrdinalIgnoreCase) ||
+                                columnName.Equals("KitchenImageUrl", StringComparison.OrdinalIgnoreCase) ||
+                                columnName.Equals("BedroomImageUrl", StringComparison.OrdinalIgnoreCase) ||
+                                columnName.Equals("BathroomImageUrl", StringComparison.OrdinalIgnoreCase) ||
+                                columnName.Equals("ParkingImageUrl", StringComparison.OrdinalIgnoreCase))
                             {
-                                var dec = Convert.ToDecimal(cellValueObj);
-                                targetCell.Value = dec;
-                                targetCell.Style.Numberformat.Format = "#,##0";
-                            }
-                            else if (columnName.Equals("NoOfRooms", StringComparison.OrdinalIgnoreCase) ||
-                                     columnName.Equals("CarpetAreaSqft", StringComparison.OrdinalIgnoreCase))
-                            {
-                                var intVal = Convert.ToInt32(cellValueObj);
-                                targetCell.Value = intVal;
-                                targetCell.Style.Numberformat.Format = "#,##0";
+                                var url = cellValueObj?.ToString();
+
+                                if (!string.IsNullOrWhiteSpace(url))
+                                {
+                                    byte[] imageBytes = null;
+
+                                    try
+                                    {
+                                        imageBytes = DownloadImageFromHttp(url).GetAwaiter().GetResult();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        imageBytes = null;
+                                    }
+
+                                    if (imageBytes != null)
+                                    {
+                                        LoadImageIntoRange(targetSheet, targetCell.Address, imageBytes, 140, 100);
+                                    }
+                                    else
+                                    {
+                                        targetCell.Value = null;
+                                    }
+                                }
+                                else
+                                {
+                                    targetCell.Value = null;
+                                }
                             }
                             else
                             {
-                                targetCell.Value = cellValueObj.ToString();
+                                if (columnName.Equals("Price", StringComparison.OrdinalIgnoreCase) || 
+                                    columnName.Equals("NoOfRooms", StringComparison.OrdinalIgnoreCase) ||
+                                    columnName.Equals("CarpetAreaSqft", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    var intVal = Convert.ToInt32(cellValueObj);
+                                    targetCell.Value = intVal;
+                                    targetCell.Style.Numberformat.Format = "#,##0";
+                                }
+                                else if (columnName.Equals("Title", StringComparison.OrdinalIgnoreCase) || 
+                                    columnName.Equals("Address", StringComparison.OrdinalIgnoreCase) ||
+                                    columnName.Equals("BuiltYear", StringComparison.OrdinalIgnoreCase) ||
+                                    columnName.Equals("Features", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    targetCell.Value = cellValueObj.ToString();
+                                }
                             }
 
                             propertySheet.Hidden = eWorkSheetHidden.Hidden;
@@ -370,6 +410,57 @@ namespace PropertyManagement.API.Services
             {
                 return;
             }
+        }
+
+        private async Task<byte[]> DownloadImageFromHttp(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return null;
+            }
+
+            try
+            {
+                url = Uri.UnescapeDataString(url);
+                var http = httpClientFactory.CreateClient();
+                var bytes = await http.GetByteArrayAsync(url);
+
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private void LoadImageIntoRange(ExcelWorksheet sheet, string cellAddress, byte[] imageBytes, int maxWidthPx, int maxHeightPx)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+            {
+                return;
+            }
+
+            using var bitmap = SKBitmap.Decode(imageBytes);
+
+            double ratioX = (double)maxWidthPx / bitmap.Width;
+            double ratioY = (double)maxHeightPx / bitmap.Height;
+            double ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(bitmap.Width * ratio);
+            int newHeight = (int)(bitmap.Height * ratio);
+
+            using var resized = bitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High);
+            using var image = SKImage.FromBitmap(resized);
+            using var data = image.Encode(SKEncodedImageFormat.Png, 95);
+
+            var picture = sheet.Drawings.AddPicture(Guid.NewGuid().ToString(), data.AsStream());
+
+            var cell = sheet.Cells[cellAddress];
+            int row = cell.Start.Row - 1;
+            int col = cell.Start.Column - 1;
+
+            picture.SetPosition(row, 2, col, 2);
+            picture.SetSize(newWidth, newHeight);
         }
     }
 }

@@ -23,6 +23,9 @@ builder.Services.AddDbContext<PMDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PMConnectionString"));
 });
 
+// Add Http Client
+builder.Services.AddHttpClient();
+
 // Add Repository
 builder.Services.AddScoped<IPropertyRepository, SQLPropertyRepository>();
 builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
