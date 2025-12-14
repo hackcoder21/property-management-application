@@ -1,7 +1,9 @@
-﻿namespace PropertyManagement.API.Services
+﻿using PropertyManagement.API.Models.DTO;
+
+namespace PropertyManagement.API.Services
 {
     public interface IReportService
     {
-        Task<byte[]> GeneratePropertyPortfolioReport(Guid userId);
+        Task<ReportFileResult> GeneratePropertyPortfolioReport(Guid userId, string format);
     }
 }

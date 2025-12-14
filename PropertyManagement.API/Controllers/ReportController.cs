@@ -16,17 +16,12 @@ namespace PropertyManagement.API.Controllers
             this.reportService = reportService;
         }
 
-        [HttpPost]
-        [Route("{userId:Guid}")]
-        public async Task<IActionResult> GenerateReport([FromRoute] Guid userId)
+        [HttpPost("{userId:Guid}/{format}")]
+        public async Task<IActionResult> GenerateReport(Guid userId, string format)
         {
-            var contentBytes = await reportService.GeneratePropertyPortfolioReport(userId);
+            var result = await reportService.GeneratePropertyPortfolioReport(userId, format);
 
-            var fileName = $"PropertyPortfolioReport_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-
-            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-            return File(contentBytes, contentType, fileName);
+            return File(result.Content, result.ContentType, result.FileName);
         }
     }
 }

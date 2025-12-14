@@ -7,6 +7,7 @@ using PropertyManagement.API.Mappings;
 using PropertyManagement.API.Models.Cloudinary;
 using PropertyManagement.API.Repositories;
 using PropertyManagement.API.Services;
+using Syncfusion.Licensing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Syncfusion License
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF1cXGFCf1FpR2JGfV5ycUVHal5XTndYUj0eQnxTdEBiW35acXdXQGFbWUxzVkleYg==");
 
 // Add DbContext class
 builder.Services.AddDbContext<PMDbContext>(options =>
@@ -55,6 +59,7 @@ builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
 var app = builder.Build();
 
+// Add EPPlus License
 ExcelPackage.License.SetNonCommercialPersonal("Rajat Jadhav");
 
 // Configure the HTTP request pipeline.

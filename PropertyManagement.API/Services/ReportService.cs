@@ -1,8 +1,12 @@
 ﻿using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
+using PropertyManagement.API.Models.DTO;
 using PropertyManagement.API.Repositories;
 using SkiaSharp;
+using Syncfusion.Pdf;
+using Syncfusion.XlsIO;
 using System.Data;
+using Syncfusion.XlsIORenderer;
 
 namespace PropertyManagement.API.Services
 {
@@ -19,36 +23,52 @@ namespace PropertyManagement.API.Services
             this.httpClientFactory = httpClientFactory;
         }
 
-        public async Task<byte[]> GeneratePropertyPortfolioReport(Guid userId)
+        public async Task<ReportFileResult> GeneratePropertyPortfolioReport(Guid userId, string format)
         {
+            format = format.ToLower();
+
             // Download template
             const string TemplatePath = "templates/ReportTemplate.xltx";
-            
             var templateStream = await cloudStorageService.DownloadFileAsync(TemplatePath);
-
             templateStream.Position = 0;
 
-            // Create Excel package using stream
+            // Generate Excel report
             using var package = new ExcelPackage(templateStream);
-
-            // Create report method
             CreateReport(package, userId);
 
             // Get generated file as byte array
-            byte[] fileBytes = package.GetAsByteArray();
+            byte[] excelBytes = package.GetAsByteArray();
 
-            // Set file name
-            var fileName = $"PropertyPortfolioReport_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            byte[] finalBytes;
+            string fileName;
+            string contentType;
 
-            // Upload file to Cloudinary
-            using var uploadStream = new MemoryStream(fileBytes);
+            if (format == "pdf")
+            {
+                finalBytes = ConvertExcelToPDF(excelBytes);
+                fileName = $"PropertyPortfolioReport_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                contentType = "application/pdf";
+            }
+            else
+            {
+                finalBytes = excelBytes;
+                fileName = $"PropertyPortfolioReport_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            }
+
+            // Upload generated file to Cloudinary
+            using var uploadStream = new MemoryStream(finalBytes);
             
             IFormFile formFile = new FormFile(uploadStream, 0, uploadStream.Length, fileName, fileName);
 
-            var uploadedPublicId = await cloudStorageService.UploadFileAsync(formFile, "uploads");
+            await cloudStorageService.UploadFileAsync(formFile, "uploads");
 
-            // Return bytes
-            return fileBytes;
+            return new ReportFileResult
+            {
+                Content = finalBytes,
+                FileName = fileName,
+                ContentType = contentType
+            };
         }
 
         private void CreateReport(ExcelPackage package, Guid userId)
@@ -461,6 +481,57 @@ namespace PropertyManagement.API.Services
 
             picture.SetPosition(row, 2, col, 2);
             picture.SetSize(newWidth, newHeight);
+        }
+
+        private byte[] ConvertExcelToPDF(byte[] excelBytes)
+        {
+            using var excelStream = new MemoryStream(excelBytes);
+
+            using ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+            application.DefaultVersion = ExcelVersion.Xlsx;
+
+            // Open workbook
+            IWorkbook workbook = application.Workbooks.Open(excelStream);
+
+            foreach (IWorksheet sheet in workbook.Worksheets)
+            {
+                // Page size & orientation
+                sheet.PageSetup.PaperSize = ExcelPaperSize.PaperA4;
+                sheet.PageSetup.Orientation = ExcelPageOrientation.Landscape;
+
+                // Margins (values are in inches)
+                sheet.PageSetup.TopMargin = 1.9 / 2.54;     // cm → inch
+                sheet.PageSetup.BottomMargin = 1.9 / 2.54;
+                sheet.PageSetup.LeftMargin = 1.2 / 2.54;
+                sheet.PageSetup.RightMargin = 0.6 / 2.54;
+                sheet.PageSetup.HeaderMargin = 0.8 / 2.54;
+                sheet.PageSetup.FooterMargin = 0.8 / 2.54;
+
+                // Scaling (VERY IMPORTANT)
+                sheet.PageSetup.FitToPagesWide = 1;
+                sheet.PageSetup.FitToPagesTall = 1;
+
+                // Print gridlines OFF (recommended for reports)
+                sheet.PageSetup.PrintGridlines = false;
+
+                // Center content
+                sheet.PageSetup.CenterHorizontally = true;
+                sheet.PageSetup.CenterVertically = false;
+            }
+
+            XlsIORenderer renderer = new XlsIORenderer();
+
+            // Convert to PDF
+            PdfDocument pdfDocument = renderer.ConvertToPDF(workbook);
+
+            using var pdfStream = new MemoryStream();
+            pdfDocument.Save(pdfStream);
+
+            // Dispose PDF document explicitly
+            pdfDocument.Close(true);
+
+            return pdfStream.ToArray();
         }
     }
 }
