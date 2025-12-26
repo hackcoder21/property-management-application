@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Syncfusion License
-SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF1cXGFCf1FpR2JGfV5ycUVHal5XTndYUj0eQnxTdEBiW35acXdXQGFbWUxzVkleYg==");
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JGaF5cXGpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH1cdnRVRWJfVEF2XUVWYEs=");
 
 // Add DbContext class
 builder.Services.AddDbContext<PMDbContext>(options =>
