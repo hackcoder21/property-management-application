@@ -148,11 +148,11 @@ var app = builder.Build();
 ExcelPackage.License.SetNonCommercialPersonal("Rajat Jadhav");
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Property Management API v1");
+});
 
 app.UseHttpsRedirection();
 
