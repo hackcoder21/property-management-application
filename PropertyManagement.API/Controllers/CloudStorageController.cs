@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PropertyManagement.API.Models.Cloudinary;
@@ -8,6 +9,7 @@ namespace PropertyManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CloudStorageController : ControllerBase
     {
         private readonly ICloudStorageService cloudStorageService;
