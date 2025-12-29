@@ -1,49 +1,71 @@
 # Property Management Application
-A full-stack Property Management application built using Angular and ASP.NET Core Web API designed to manage property portfolios and generate detailed Excel & PDF reports.
 
-Live API 🌐: https://property-management-api-6j5v.onrender.com/swagger/index.html
+A full-stack **Property Management Application** built using **Angular** and **ASP.NET Core Web API**, designed to manage property portfolios and generate detailed Excel & PDF reports.
 
-Features Overview
-1. User Registration & Login (JWT Authentication)
-2. Create, Update, Delete Users & Properties
-3. Secure APIs using Role-based Authorization
-4. Generate Excel & PDF reports
-5. SQL Server integration using EF Core
-6. Stored-procedure-based reporting
-7. Dockerized and deployed on Render (Linux)
+🔗 **Live API (Swagger):**  
+https://property-management-api-6j5v.onrender.com/swagger/index.html
 
-Tech Stack
--> Front-end
--> Angular
--> HTML, CSS, TypeScript
+---
 
-Backend
--> ASP.NET Core Web API (.NET 8)
--> Entity Framework Core
--> ASP.NET Identity
--> JWT Authentication
--> EPPlus for Excel report generation: https://www.epplussoftware.com/
--> Syncfusion for Excel to PDF conversion: https://www.syncfusion.com/
--> SkiaSharp for loading images to Excel: https://skiasharp.com/
+## ✨ Features Overview
+- User Registration & Login (JWT Authentication)
+- Create, Update, Delete Users & Properties
+- Secure APIs using Role-based Authorization
+- Generate Excel & PDF reports
+- SQL Server integration using EF Core
+- Stored-procedure-based reporting
+- Dockerized and deployed on Render (Linux)
 
-Database
--> MS SQL Server: https://somee.com/
+---
 
-Cloud & Deployment
--> Render (Linux container): https://render.com/ 
--> Cloudinary (File storage): https://cloudinary.com/
+## 🛠 Tech Stack
 
-ER-Diagram
+### Frontend
+- Angular
+- HTML, CSS, TypeScript
+
+### Backend
+- ASP.NET Core Web API (.NET 8)
+- Entity Framework Core
+- ASP.NET Identity
+- JWT Authentication
+- EPPlus - Excel report generation
+  https://www.epplussoftware.com/
+- Syncfusion - Excel to PDF conversion
+  https://www.syncfusion.com/
+- SkiaSharp - Load images to Excel
+  https://skiasharp.com/
+
+### Database
+- MS SQL Server (Somee)  
+  https://somee.com/
+
+### Cloud & Deployment
+- Render (Linux container)  
+  https://render.com/
+- Cloudinary (Files storage)  
+  https://cloudinary.com/
+
+---
+
+## 🗂 ER Diagram
+
 Users ------ (1 - M) ------ Properties
 
-Users Table
+---
+
+## 🧑 Users Table
+
 | Column Name      | Type                 | Nullable? | Notes                      |
 | ---------------- | -------------------- | --------- | -------------------------- |
 | Id               | GUID                 | N         | Primary Key                |
 | FullName         | NVARCHAR(150)        | N         | User's full name           |
 | Email            | NVARCHAR(150)        | N         | Used's Email               |
 
-Properties Table
+---
+
+## 🏠 Properties Table
+
 | Column Name      | Type                 | Nullable? | Notes                      |
 | ---------------- | -------------------- | --------- | -------------------------- |
 | Id               | GUID                 | N         | Primary Key                |
@@ -66,28 +88,41 @@ Properties Table
 | BedroomImageUrl  | NVARCHAR(260)        | Y         | Bedroom image              |
 | ParkingImageUrl  | NVARCHAR(260)        | Y         | Parking image              |
 
-Authentication Flow
-1. User registers using Email + Password
+---
+
+## 🔐 Authentication Flow
+
+1. User registers using **Email + Password**
 2. ASP.NET Identity creates the user
-3. Upon login, JWT token is generated
-4. Token is required for all secured APIs
+3. On login, a **JWT token** is generated
+4. JWT token is required for all secured APIs
 
-Application Flow
-1. Application User registration
--> Creates a user in AspNetUsers
--> Assigns default role as Writer
+---
 
-2. Create users & properties
--> Within application, create user with name & email address
--> This user will have properties under his portfolio, add property details, images
--> Generate detailed report in Excel/PDF which highlights the user's portfolio & property details
+## 🔄 Application Flow
 
-Environment Configuration
-All sensitive values are stored securely using Environment Variables:
--> JWT Secret
--> Database Connection Strings
--> Cloudinary API Keys
+1. **Application User registration**
+- Creates a user in `AspNetUsers`
+- Assigns default role: `Writer`
 
-Author
-Rajat Jadhav
+2. **Create users & properties**
+- Within application, create user with name & email
+- Add multiple properties under a user
+- Generate detailed report in Excel/PDF which highlights the user's portfolio & property details
+
+---
+
+## 🔐 Environment Configuration
+
+All sensitive values are managed securely using **Environment Variables**:
+
+- JWT Secret Key
+- Database Connection Strings
+- Cloudinary API Keys
+
+---
+
+## 👤 Author
+
+**Rajat Jadhav**  
 Software Developer
