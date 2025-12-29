@@ -42,3 +42,6 @@ appsettings.Development.json
 
 # Others
 *.vsidx
+
+# User secrets
+**/secrets.json
