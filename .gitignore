@@ -36,6 +36,9 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
+PropertyManagement.UI/node_modules/
+PropertyManagement.UI/dist/
+PropertyManagement.UI/.angular/
 
 # Environment files
 appsettings.Development.json
