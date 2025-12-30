@@ -2,7 +2,10 @@
 
 A full-stack **Property Management Application** built using **Angular** and **ASP.NET Core Web API**, designed to manage property portfolios and generate detailed Excel & PDF reports.
 
-🔗 **Live API (Swagger):**  
+🌐 **Live Application URL:** 
+https://property-management-application.netlify.app/
+
+🌐 **Live API (Swagger):**  
 https://property-management-api-6j5v.onrender.com/swagger/index.html
 
 ---
@@ -22,7 +25,7 @@ https://property-management-api-6j5v.onrender.com/swagger/index.html
 
 ### Frontend
 - Angular
-- HTML, CSS, TypeScript
+- HTML, CSS, TypeScript, Bootstrap
 
 ### Backend
 - ASP.NET Core Web API (.NET 8)
@@ -41,6 +44,8 @@ https://property-management-api-6j5v.onrender.com/swagger/index.html
   https://somee.com/
 
 ### Cloud & Deployment
+- Netlify (Angular Application)
+  https://www.netlify.com/
 - Render (Linux container)  
   https://render.com/
 - Cloudinary (Files storage)  
@@ -54,7 +59,7 @@ Users ------ (1 - M) ------ Properties
 
 ---
 
-## 🧑 Users Table
+## 👥 Users Table
 
 | Column Name      | Type                 | Nullable? | Notes                      |
 | ---------------- | -------------------- | --------- | -------------------------- |
