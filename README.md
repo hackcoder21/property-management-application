@@ -98,8 +98,7 @@ Users ------ (1 - M) ------ Properties
 ## 📁 Angular Project Structure
 
 src/app
-│
-├── core/                
+├── core/                        # App-wide singletons (logic & APIs)
 │   ├── services/
 │   │   ├── auth.service.ts
 │   │   ├── user.service.ts
@@ -118,7 +117,7 @@ src/app
 │       ├── property.model.ts
 │       └── auth.model.ts
 │
-├── auth/             
+├── auth/                        # Authentication (Login / Register)
 │   ├── login/
 │   │   ├── login.component.ts
 │   │   ├── login.component.html
@@ -129,31 +128,31 @@ src/app
 │       ├── register.component.html
 │       └── register.component.css
 │
-├── dashboard/        
+├── dashboard/                   # Main dashboard (after login)
 │   ├── dashboard.component.ts
 │   ├── dashboard.component.html
 │   └── dashboard.component.css
 │
-├── user/             
+├── user/                        # Application-level users (not AspNetUsers)
 │   ├── user-form/
 │   ├── user-details/
 │   └── user.module.ts
 │
-├── property/
+├── property/                    # Property management
 │   ├── property-list/
 │   ├── property-form/
 │   ├── property-details/
 │   └── property.module.ts
 │
-├── shared/      
+├── shared/                      # Reusable UI components
 │   ├── header/
 │   ├── footer/
 │   ├── pagination/
 │   └── loader/
 │
-├── app-routing.module.ts
-├── app.component.ts
-└── app.module.ts
+├── app-routing.module.ts        # Application routing
+├── app.component.ts             # Root component (layout shell)
+└── app.module.ts                # Root Angular module
 
 ---
 
