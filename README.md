@@ -95,6 +95,68 @@ Users ------ (1 - M) ------ Properties
 
 ---
 
+## 📁 Angular Project Structure
+
+src/app
+│
+├── core/                
+│   ├── services/
+│   │   ├── auth.service.ts
+│   │   ├── user.service.ts
+│   │   ├── property.service.ts
+│   │   ├── cloud.service.ts
+│   │   └── report.service.ts
+│   │
+│   ├── guards/
+│   │   └── auth.guard.ts
+│   │
+│   ├── interceptors/
+│   │   └── auth.interceptor.ts
+│   │
+│   └── models/
+│       ├── user.model.ts
+│       ├── property.model.ts
+│       └── auth.model.ts
+│
+├── auth/             
+│   ├── login/
+│   │   ├── login.component.ts
+│   │   ├── login.component.html
+│   │   └── login.component.css
+│   │
+│   └── register/
+│       ├── register.component.ts
+│       ├── register.component.html
+│       └── register.component.css
+│
+├── dashboard/        
+│   ├── dashboard.component.ts
+│   ├── dashboard.component.html
+│   └── dashboard.component.css
+│
+├── user/             
+│   ├── user-form/
+│   ├── user-details/
+│   └── user.module.ts
+│
+├── property/
+│   ├── property-list/
+│   ├── property-form/
+│   ├── property-details/
+│   └── property.module.ts
+│
+├── shared/      
+│   ├── header/
+│   ├── footer/
+│   ├── pagination/
+│   └── loader/
+│
+├── app-routing.module.ts
+├── app.component.ts
+└── app.module.ts
+
+---
+
 ## 🔐 Authentication Flow
 
 1. User registers using **Email + Password**
