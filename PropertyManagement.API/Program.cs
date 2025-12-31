@@ -145,6 +145,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
 
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:4200",
+                "https://property-management-application.netlify.app"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Add EPPlus License
@@ -158,6 +173,8 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 
