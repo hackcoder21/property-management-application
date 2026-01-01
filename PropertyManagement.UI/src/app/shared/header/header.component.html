@@ -1,1 +1,11 @@
-<p>header works!</p>
+<nav class="navbar navbar-dark bg-dark px-4">
+  <span class="navbar-brand">Property Management</span>
+
+  <button
+    *ngIf="authService.isAuthenticated()"
+    class="btn btn-outline-light btn-sm"
+    (click)="logout()"
+  >
+    Logout
+  </button>
+</nav>
