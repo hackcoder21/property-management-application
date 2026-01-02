@@ -20,8 +20,8 @@ export class AuthService {
   }
 
   // Register method
-  register(data: RegisterRequest): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/Register`, data);
+  register(data: RegisterRequest): Observable<string> {
+    return this.http.post(`${this.baseUrl}/Register`, data, { responseType: 'text' });
   }
 
   // Save token to local storage

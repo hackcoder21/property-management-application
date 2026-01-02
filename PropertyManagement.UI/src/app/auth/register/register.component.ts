@@ -34,8 +34,8 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) return; 
 
     this.authService.register(this.registerForm.value).subscribe({
-      next: () => {
-        alert('Registration successful. Please login.');
+      next: (response) => {
+        alert(response);
         this.router.navigate(['/login']);
       },
       error: (error) => {
