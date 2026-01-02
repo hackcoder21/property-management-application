@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class RegisterComponent implements OnInit {
   
   registerForm: FormGroup = new FormGroup({});
+  isLoading: boolean = false;
   
   constructor(private formBuilder: FormBuilder, 
     private router: Router, 
@@ -33,12 +34,16 @@ export class RegisterComponent implements OnInit {
   onRegister() {
     if (this.registerForm.invalid) return; 
 
+    this.isLoading = true;
+
     this.authService.register(this.registerForm.value).subscribe({
       next: (response) => {
+        this.isLoading = false;
         alert(response);
         this.router.navigate(['/login']);
       },
       error: (error) => {
+        this.isLoading = false;
         alert('Registration failed. Please try again.');
         console.error(error);
       }

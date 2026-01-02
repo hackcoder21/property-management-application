@@ -51,10 +51,13 @@
 
       <button
         type="submit"
-        class="btn btn-dark w-100"
-        [disabled]="registerForm.invalid"
+        class="btn btn-dark w-100 d-flex justify-content-center align-items-center"
+        [disabled]="registerForm.invalid || isLoading"
       >
-        Register
+        <span *ngIf="!isLoading">Register</span>
+        <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+        </span>
       </button>
 
       <div class="text-center mt-3">

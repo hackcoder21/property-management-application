@@ -51,10 +51,13 @@
 
       <button
         type="submit"
-        class="btn btn-dark w-100"
-        [disabled]="loginForm.invalid"
+        class="btn btn-dark w-100 d-flex justify-content-center align-items-center"
+        [disabled]="loginForm.invalid || isLoading"
       >
-        Login
+        <span *ngIf="!isLoading">Login</span>
+        <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+        </span>
       </button>
 
       <div class="text-center mt-3">
