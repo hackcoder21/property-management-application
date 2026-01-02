@@ -5,11 +5,16 @@ import { RegisterComponent } from './auth/register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { authGuard } from './core/guards/auth.guard';
 import { UserFormComponent } from './user/user-form/user-form.component';
+import { publicGuard } from './core/guards/public.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [publicGuard] },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [publicGuard],
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

@@ -1,18 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+} from '../models/auth.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   // Define the base URL for authentication
   private baseUrl = `${environment.apiBaseUrl}/api/Auth`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Login method
   login(data: LoginRequest): Observable<AuthResponse> {
@@ -21,7 +24,9 @@ export class AuthService {
 
   // Register method
   register(data: RegisterRequest): Observable<string> {
-    return this.http.post(`${this.baseUrl}/Register`, data, { responseType: 'text' });
+    return this.http.post(`${this.baseUrl}/Register`, data, {
+      responseType: 'text',
+    });
   }
 
   // Save token to local storage
@@ -41,6 +46,14 @@ export class AuthService {
 
   // Check if user is authenticated
   isAuthenticated(): boolean {
-    return this.getToken() !== null;
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiry = payload.exp * 1000;
+
+    return Date.now() < expiry;
   }
 }
