@@ -1,1 +1,59 @@
-<p>user-form works!</p>
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="card p-4 shadow" style="width: 30%">
+    <h4 class="text-center mb-3">Create User</h4>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label"
+          >Full Name
+          <span
+            class="text-danger"
+            *ngIf="
+              userForm.get('fullName')?.invalid &&
+              userForm.get('fullName')?.touched
+            "
+            style="font-size: 10px"
+            >Full name is required</span
+          ></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          formControlName="fullName"
+          placeholder="Enter full name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"
+          >Email
+          <span
+            class="text-danger"
+            *ngIf="
+              userForm.get('email')?.invalid && userForm.get('email')?.touched
+            "
+            style="font-size: 10px"
+            >Valid email is required</span
+          ></label
+        >
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Enter email"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-dark w-100 d-flex justify-content-center align-items-center"
+        [disabled]="userForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Save</span>
+        <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+        </span>
+      </button>
+    </form>
+  </div>
+</div>

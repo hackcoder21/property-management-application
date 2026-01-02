@@ -1,2 +1,53 @@
 <h2>Dashboard</h2>
 <hr />
+
+<!-- Loading -->
+<div *ngIf="isLoading" class="text-center">
+  <div class="spinner-border"></div>
+</div>
+
+<!-- Empty state -->
+<div
+  *ngIf="!isLoading && users.length === 0"
+  class="text-center p-5 border rounded"
+>
+  <h5>No users</h5>
+  <button class="btn btn-primary mt-3" (click)="onCreateUser()">
+    Create User
+  </button>
+</div>
+
+<!-- Users table -->
+<div *ngIf="!isLoading && users.length > 0">
+  <button class="btn btn-primary mb-3" (click)="onCreateUser()">
+    + Create User
+  </button>
+
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.fullName }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-primary me-2"
+            (click)="onViewUser(user.id)"
+          >
+            View
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="onDeleteUser(user.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
