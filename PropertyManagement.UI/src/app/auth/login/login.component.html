@@ -12,7 +12,7 @@
               loginForm.get('username')?.invalid &&
               loginForm.get('username')?.touched
             "
-            style="font-size: smaller"
+            style="font-size: 10px"
             >Email is required</span
           ></label
         >
@@ -33,10 +33,14 @@
               loginForm.get('password')?.invalid &&
               loginForm.get('password')?.touched
             "
-            style="font-size: smaller"
-            >Password is required (min 6 characters)</span
-          ></label
+            style="font-size: 10px"
+            >Password is required
+          </span></label
         >
+        <p style="font-size: 10px">
+          (Password must be min. 6 characters & must contain uppercase,
+          lowercase, number & special character)
+        </p>
         <input
           type="password"
           class="form-control"
