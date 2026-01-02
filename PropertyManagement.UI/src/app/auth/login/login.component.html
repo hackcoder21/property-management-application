@@ -4,7 +4,18 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="mb-3">
-        <label class="form-label">Email</label>
+        <label class="form-label"
+          >Email
+          <span
+            class="text-danger"
+            *ngIf="
+              loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched
+            "
+            style="font-size: smaller"
+            >Email is required</span
+          ></label
+        >
         <input
           type="email"
           class="form-control"
@@ -14,7 +25,18 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Password</label>
+        <label class="form-label"
+          >Password
+          <span
+            class="text-danger"
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+            style="font-size: smaller"
+            >Password is required (min 6 characters)</span
+          ></label
+        >
         <input
           type="password"
           class="form-control"
