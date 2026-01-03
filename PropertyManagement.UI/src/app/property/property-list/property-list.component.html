@@ -1,1 +1,60 @@
-<p>property-list works!</p>
+<h2>Dashboard - Properties</h2>
+<hr />
+
+<!-- Loading -->
+<div *ngIf="isLoading" class="text-center">
+  <div class="spinner-border"></div>
+</div>
+
+<!-- Empty state -->
+<div
+  *ngIf="!isLoading && property.length === 0"
+  class="text-center p-5 border rounded"
+>
+  <h5>No properties</h5>
+  <button class="btn btn-primary mt-3" (click)="onCreateProperty()">
+    Create Property
+  </button>
+</div>
+
+<!-- Properties table -->
+<div *ngIf="!isLoading && property.length > 0">
+  <button class="btn btn-primary mb-3" (click)="onCreateProperty()">
+    + Create Property
+  </button>
+
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Title</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of property">
+        <td>{{ p.title }}</td>
+        <td>{{ p.city }}</td>
+        <td>{{ p.state }}</td>
+        <td>{{ p.price | currency }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-primary me-2"
+            (click)="onViewProperty(p.id)"
+          >
+            View Property
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="onDeleteProperty(p.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
