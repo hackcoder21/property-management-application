@@ -34,11 +34,11 @@ export class DashboardComponent implements OnInit {
   }
 
   onCreateUser() {
-    this.router.navigate(['/users/create']);
+    this.router.navigate(['dashboard/users/create']);
   }
 
-  onViewUser(userId: string) {
-    this.router.navigate([`/users/${userId}`]);
+  onViewProperties(userId: string) {
+    this.router.navigate([`dashboard/users/${userId}/properties`]);
   }
 
   onDeleteUser(userId: string) {
