@@ -1,1 +1,300 @@
-<p>property-form works!</p>
+<h2>
+  {{ isEditMode ? "Dashboard - Edit Property" : "Dashboard - Create Property" }}
+</h2>
+<hr />
+
+<form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label class="form-label"
+      >Title
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('title')?.invalid &&
+          propertyForm.get('title')?.touched
+        "
+        style="font-size: 10px"
+        >Title is required</span
+      ></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      formControlName="title"
+      placeholder="Enter property title"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Price
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('price')?.invalid &&
+          propertyForm.get('price')?.touched
+        "
+        style="font-size: 10px"
+        >Price is required</span
+      ></label
+    >
+    <input
+      type="number"
+      class="form-control"
+      formControlName="price"
+      placeholder="Enter property price"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >City
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('city')?.invalid && propertyForm.get('city')?.touched
+        "
+        style="font-size: 10px"
+        >City is required</span
+      ></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      formControlName="city"
+      placeholder="Enter city"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >State
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('state')?.invalid &&
+          propertyForm.get('state')?.touched
+        "
+        style="font-size: 10px"
+        >State is required</span
+      ></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      formControlName="state"
+      placeholder="Enter state"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Locality
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('locality')?.invalid &&
+          propertyForm.get('locality')?.touched
+        "
+        style="font-size: 10px"
+        >Locality is required</span
+      ></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      formControlName="locality"
+      placeholder="Enter locality"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Pincode
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('pincode')?.invalid &&
+          propertyForm.get('pincode')?.touched
+        "
+        style="font-size: 10px"
+        >Pincode is required</span
+      ></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      formControlName="pincode"
+      placeholder="Enter pincode"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >No. of rooms
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('noOfRooms')?.invalid &&
+          propertyForm.get('noOfRooms')?.touched
+        "
+        style="font-size: 10px"
+        >No. of rooms is required</span
+      ></label
+    >
+    <input type="number" class="form-control" formControlName="noOfRooms" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Carpet area
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('carpetAreaSqft')?.invalid &&
+          propertyForm.get('carpetAreaSqft')?.touched
+        "
+        style="font-size: 10px"
+        >Carpet area is required</span
+      ></label
+    >
+    <input
+      type="number"
+      class="form-control"
+      formControlName="carpetAreaSqft"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Built year
+      <span
+        class="text-danger"
+        *ngIf="
+          propertyForm.get('builtYear')?.invalid &&
+          propertyForm.get('builtYear')?.touched
+        "
+        style="font-size: 10px"
+        >Built year is required</span
+      ></label
+    >
+    <input type="number" class="form-control" formControlName="builtYear" />
+  </div>
+
+  <div class="form-check mb-3">
+    <label class="form-check-label" for="balcony">Balcony</label>
+    <input
+      type="checkbox"
+      class="form-check-input"
+      formControlName="balcony"
+      id="balcony"
+    />
+  </div>
+
+  <div class="form-check mb-3">
+    <label class="form-check-label" for="parking">Parking</label>
+    <input
+      type="checkbox"
+      class="form-check-input"
+      formControlName="parking"
+      id="parking"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Property image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Living room image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Kitchen image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Bathroom image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Bedroom image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label"
+      >Parking image
+      <span *ngIf="imageUploading" class="mt-2"
+        ><span class="spinner-border spinner-border-sm"></span></span
+    ></label>
+    <input
+      type="file"
+      class="form-control"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+  </div>
+
+  <div class="mb-3">
+    <button
+      class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
+      type="submit"
+      [disabled]="propertyForm.invalid || isLoading"
+    >
+      <span *ngIf="!isLoading">{{ isEditMode ? "Update" : "Create" }}</span>
+      <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
+        <span class="spinner-border spinner-border-sm" role="status"></span>
+      </span>
+    </button>
+  </div>
+</form>
