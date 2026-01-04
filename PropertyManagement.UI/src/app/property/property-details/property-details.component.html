@@ -6,81 +6,103 @@
 </div>
 
 <div *ngIf="!isLoading && property" class="card p-4">
-  <h4 class="mb-3">{{ property.title }}</h4>
-
-  <div class="row mb-3">
-    <div class="col-md-6"><strong>Price:</strong> ₹{{ property.price }}</div>
-    <div class="col-md-6"><strong>City:</strong> {{ property.city }}</div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6"><strong>State:</strong> {{ property.state }}</div>
-    <div class="col-md-6">
-      <strong>Locality:</strong> {{ property.locality }}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6"><strong>Pincode:</strong> {{ property.pincode }}</div>
-    <div class="col-md-6">
-      <strong>No. of rooms:</strong> {{ property.noOfRooms }}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <strong>Carpet area:</strong> {{ property.carpetAreaSqft }} sqft.
-    </div>
-    <div class="col-md-6">
-      <strong>Built year:</strong> {{ property.builtYear }}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <strong>Balcony:</strong> {{ property.balcony ? "Yes" : "No" }}
-    </div>
-    <div class="col-md-6">
-      <strong>Parking:</strong> {{ property.parking ? "Yes" : "No" }}
-    </div>
-  </div>
-
-  <h5 class="mt-4">Property Images</h5>
-  <div class="row g-3">
-    <div class="col-md-4" *ngIf="property.propertyImageUrl">
-      <img [src]="property.propertyImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Property</p>
+  <div class="row mb-4 align-items-start">
+    <div class="col-md-2 text-center">
+      <img
+        *ngIf="property.propertyImageUrl"
+        [src]="property.propertyImageUrl"
+        class="img-fluid rounded"
+      />
     </div>
 
-    <div class="col-md-4" *ngIf="property.hallImageUrl">
-      <img [src]="property.hallImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Living Room</p>
-    </div>
+    <div class="col-md-10">
+      <h4 class="mt-3 mb-3">{{ property.title }}</h4>
 
-    <div class="col-md-4" *ngIf="property.kitchenImageUrl">
-      <img [src]="property.kitchenImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Kitchen</p>
-    </div>
+      <h5 class="text-success mb-4">₹ {{ property.price | number }}</h5>
 
-    <div class="col-md-4" *ngIf="property.bathroomImageUrl">
-      <img [src]="property.bathroomImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Bathroom</p>
-    </div>
+      <div class="row mb-3">
+        <div class="col-md-3"><strong>City:</strong> {{ property.city }}</div>
+        <div class="col-md-3"><strong>State:</strong> {{ property.state }}</div>
+        <div class="col-md-3">
+          <strong>Locality:</strong> {{ property.locality }}
+        </div>
+        <div class="col-md-3">
+          <strong>Pincode:</strong> {{ property.pincode }}
+        </div>
+      </div>
 
-    <div class="col-md-4" *ngIf="property.bedroomImageUrl">
-      <img [src]="property.bedroomImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Bedroom</p>
-    </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <strong>No. of rooms:</strong> {{ property.noOfRooms }}
+        </div>
+        <div class="col-md-3">
+          <strong>Carpet area:</strong> {{ property.carpetAreaSqft }} sqft.
+        </div>
+        <div class="col-md-3">
+          <strong>Built year:</strong> {{ property.builtYear }}
+        </div>
+      </div>
 
-    <div class="col-md-4" *ngIf="property.parkingImageUrl">
-      <img [src]="property.parkingImageUrl" class="img-fluid rounded" />
-      <p class="text-center mt-1">Parking</p>
-    </div>
-  </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <strong>Balcony:</strong> {{ property.balcony ? "Yes" : "No" }}
+        </div>
+        <div class="col-md-3">
+          <strong>Parking:</strong> {{ property.parking ? "Yes" : "No" }}
+        </div>
+      </div>
 
-  <div class="d-flex justify-content-left mt-4">
-    <button class="btn btn-primary" (click)="onEditProperty()">
-      Edit Property
-    </button>
+      <div class="row">
+        <h5 class="mt-4">Property Images</h5>
+
+        <div class="row text-center">
+          <div class="col-md-2" *ngIf="property.hallImageUrl">
+            <img
+              [src]="property.hallImageUrl"
+              class="img-fluid rounded sub-image"
+            />
+            <small>Living Room</small>
+          </div>
+
+          <div class="col-md-2" *ngIf="property.kitchenImageUrl">
+            <img
+              [src]="property.kitchenImageUrl"
+              class="img-fluid rounded sub-image"
+            />
+            <small>Kitchen</small>
+          </div>
+
+          <div class="col-md-2" *ngIf="property.bathroomImageUrl">
+            <img
+              [src]="property.bathroomImageUrl"
+              class="img-fluid rounded sub-image"
+            />
+            <small>Bathroom</small>
+          </div>
+
+          <div class="col-md-2" *ngIf="property.bedroomImageUrl">
+            <img
+              [src]="property.bedroomImageUrl"
+              class="img-fluid rounded sub-image"
+            />
+            <small>Bedroom</small>
+          </div>
+
+          <div class="col-md-2" *ngIf="property.parkingImageUrl">
+            <img
+              [src]="property.parkingImageUrl"
+              class="img-fluid rounded sub-image"
+            />
+            <small>Parking</small>
+          </div>
+
+          <div class="d-flex justify-content-left mt-4">
+            <button class="btn btn-primary" (click)="onEditProperty()">
+              Edit Property
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
