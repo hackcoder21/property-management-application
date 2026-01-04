@@ -156,7 +156,8 @@ builder.Services.AddCors(options =>
                 "https://property-management-application.netlify.app"
             )
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowAnyHeader()
+            .WithExposedHeaders("Content-Disposition");
     });
 });
 
