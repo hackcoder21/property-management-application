@@ -99,8 +99,21 @@ export class DashboardComponent implements OnInit {
       return `report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
     }
 
-    const match = /filename="?([^"]+)"?/.exec(contentDisposition);
-    return match?.[1] ?? `report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
+    const filenameStarMatch = contentDisposition.match(
+      /filename\*\s*=\s*UTF-8''([^;]+)/i
+    );
+    if (filenameStarMatch?.[1]) {
+      return decodeURIComponent(filenameStarMatch[1]);
+    }
+
+    const filenameMatch = contentDisposition.match(
+      /filename\s*=\s*"?(.*?)"?(;|$)/i
+    );
+    if (filenameMatch?.[1]) {
+      return filenameMatch[1];
+    }
+
+    return `report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
   }
 
   private triggerDownload(blob: Blob, filename: string) {
