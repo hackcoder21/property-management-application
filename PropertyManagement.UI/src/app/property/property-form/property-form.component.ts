@@ -128,7 +128,10 @@ export class PropertyFormComponent implements OnInit {
     });
   }
 
-  onImageSelected(event: Event) {
+  onImageSelected(
+    event: Event,
+    type: 'property' | 'hall' | 'kitchen' | 'bathroom' | 'bedroom' | 'parking'
+  ) {
     const file = (event.target as HTMLInputElement).files?.[0];
 
     if (!file) return;
@@ -138,10 +141,35 @@ export class PropertyFormComponent implements OnInit {
     this.cloudService.uploadImage(file).subscribe({
       next: (response) => {
         this.imageUploading = false;
-        this.propertyForm.patchValue({
-          propertyImageUrl: response.url,
-          propertyImagePublicId: response.publicId,
-        });
+        const patch: any = {};
+
+        switch (type) {
+          case 'property':
+            patch.propertyImageUrl = response.url;
+            patch.propertyImagePublicId = response.publicId;
+            break;
+          case 'hall':
+            patch.hallImageUrl = response.url;
+            patch.hallImagePublicId = response.publicId;
+            break;
+          case 'kitchen':
+            patch.kitchenImageUrl = response.url;
+            patch.kitchenImagePublicId = response.publicId;
+            break;
+          case 'bathroom':
+            patch.bathroomImageUrl = response.url;
+            patch.bathroomImagePublicId = response.publicId;
+            break;
+          case 'bedroom':
+            patch.bedroomImageUrl = response.url;
+            patch.bedroomImagePublicId = response.publicId;
+            break;
+          case 'parking':
+            patch.parkingImageUrl = response.url;
+            patch.parkingImagePublicId = response.publicId;
+            break;
+        }
+        this.propertyForm.patchValue(patch);
       },
       error: (error) => {
         alert('Error uploading image');
