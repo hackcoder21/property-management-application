@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../core/models/user.model';
 import { UserService } from '../core/services/user.service';
 import { Router } from '@angular/router';
+import { ReportService } from '../core/services/report.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,11 @@ export class DashboardComponent implements OnInit {
   users: User[] = [];
   isLoading: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private reportService: ReportService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -54,5 +59,33 @@ export class DashboardComponent implements OnInit {
         alert('Error deleting user');
       },
     });
+  }
+
+  downloadReport(userId: string, type: 'excel' | 'pdf') {
+    const request$ =
+      type === 'excel'
+        ? this.reportService.generateReportExcel(userId)
+        : this.reportService.generateReportPdf(userId);
+
+    request$.subscribe({
+      next: (blob) => {
+        this.triggerDownload(
+          blob,
+          `report.${type === 'excel' ? 'xlsx' : 'pdf'}`
+        );
+      },
+      error: () => {
+        alert('Error generating report');
+      },
+    });
+  }
+
+  private triggerDownload(blob: Blob, filename: string) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 }

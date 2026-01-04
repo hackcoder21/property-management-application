@@ -29,6 +29,7 @@
         <th>Full Name</th>
         <th>Email</th>
         <th>Actions</th>
+        <th>Download Report</th>
       </tr>
     </thead>
 
@@ -46,6 +47,35 @@
           <button class="btn btn-sm btn-danger" (click)="onDeleteUser(user.id)">
             Delete
           </button>
+        </td>
+        <td>
+          <div class="dropdown">
+            <button
+              class="btn btn-sm btn-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Download Report
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <button
+                  class="dropdown-item"
+                  (click)="downloadReport(user.id, 'excel')"
+                >
+                  Excel
+                </button>
+              </li>
+              <li>
+                <button
+                  class="dropdown-item"
+                  (click)="downloadReport(user.id, 'pdf')"
+                >
+                  PDF
+                </button>
+              </li>
+            </ul>
+          </div>
         </td>
       </tr>
     </tbody>
