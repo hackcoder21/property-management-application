@@ -29,7 +29,7 @@ export class PropertyListComponent implements OnInit {
 
     this.propertyService.getPropertyByUserId(this.userId).subscribe({
       next: (data) => {
-        this.property = data;
+        this.property = data.filter((p) => p.userId === this.userId);
         this.isLoading = false;
       },
       error: (error) => {
