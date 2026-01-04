@@ -49,32 +49,39 @@
           </button>
         </td>
         <td>
-          <div class="dropdown">
+          <div class="position-relative">
             <button
-              class="btn btn-sm btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
+              class="btn btn-sm btn-secondary d-flex align-items-center justify-content-center report-btn"
+              [disabled]="downloadingReportPerUserId === user.id"
+              (click)="toggleDropdown(user.id)"
             >
-              Download Report
+              <span *ngIf="downloadingReportPerUserId !== user.id"
+                >Download Report</span
+              ><span *ngIf="downloadingReportPerUserId === user.id">
+                <span class="spinner-border spinner-border-sm"></span>
+              </span>
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <button
-                  class="dropdown-item"
-                  (click)="downloadReport(user.id, 'excel')"
-                >
-                  Excel
-                </button>
-              </li>
-              <li>
-                <button
-                  class="dropdown-item"
-                  (click)="downloadReport(user.id, 'pdf')"
-                >
-                  PDF
-                </button>
-              </li>
-            </ul>
+
+            <div
+              *ngIf="
+                activeDropdownUserId === user.id &&
+                downloadingReportPerUserId !== user.id
+              "
+              class="dropdown-menu show mt-1"
+            >
+              <button
+                class="dropdown-item"
+                (click)="downloadReport(user.id, 'excel')"
+              >
+                Excel
+              </button>
+              <button
+                class="dropdown-item"
+                (click)="downloadReport(user.id, 'pdf')"
+              >
+                PDF
+              </button>
+            </div>
           </div>
         </td>
       </tr>

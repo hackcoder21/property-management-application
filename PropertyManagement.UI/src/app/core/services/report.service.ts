@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,22 +11,24 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-  generateReportExcel(userId: string): Observable<Blob> {
+  generateReportExcel(userId: string): Observable<HttpResponse<Blob>> {
     return this.http.post(
       `${this.baseUrl}/${userId}/excel`,
       {},
       {
         responseType: 'blob',
+        observe: 'response',
       }
     );
   }
 
-  generateReportPdf(userId: string): Observable<Blob> {
+  generateReportPdf(userId: string): Observable<HttpResponse<Blob>> {
     return this.http.post(
       `${this.baseUrl}/${userId}/pdf`,
       {},
       {
         responseType: 'blob',
+        observe: 'response',
       }
     );
   }

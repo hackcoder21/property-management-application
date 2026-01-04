@@ -12,6 +12,8 @@ import { ReportService } from '../core/services/report.service';
 export class DashboardComponent implements OnInit {
   users: User[] = [];
   isLoading: boolean = false;
+  downloadingReportPerUserId: string | null = null;
+  activeDropdownUserId: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -62,22 +64,43 @@ export class DashboardComponent implements OnInit {
   }
 
   downloadReport(userId: string, type: 'excel' | 'pdf') {
+    if (this.downloadingReportPerUserId) return;
+
+    this.activeDropdownUserId = null;
+    this.downloadingReportPerUserId = userId;
+
     const request$ =
       type === 'excel'
         ? this.reportService.generateReportExcel(userId)
         : this.reportService.generateReportPdf(userId);
 
     request$.subscribe({
-      next: (blob) => {
-        this.triggerDownload(
-          blob,
-          `report.${type === 'excel' ? 'xlsx' : 'pdf'}`
+      next: (response) => {
+        const blob = response.body!;
+        const filename = this.getFilenameFromHeader(
+          response.headers.get('content-disposition'),
+          type
         );
+        this.triggerDownload(blob, filename);
+        this.downloadingReportPerUserId = null;
       },
       error: () => {
+        this.downloadingReportPerUserId = null;
         alert('Error generating report');
       },
     });
+  }
+
+  getFilenameFromHeader(
+    contentDisposition: string | null,
+    type: 'excel' | 'pdf'
+  ): string {
+    if (!contentDisposition) {
+      return `report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
+    }
+
+    const match = /filename="?([^"]+)"?/.exec(contentDisposition);
+    return match?.[1] ?? `report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
   }
 
   private triggerDownload(blob: Blob, filename: string) {
@@ -87,5 +110,10 @@ export class DashboardComponent implements OnInit {
     a.download = filename;
     a.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  toggleDropdown(userId: string) {
+    this.activeDropdownUserId =
+      this.activeDropdownUserId === userId ? null : userId;
   }
 }
