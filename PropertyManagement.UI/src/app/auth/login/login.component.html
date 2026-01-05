@@ -1,68 +1,70 @@
-<div class="d-flex justify-content-center align-items-center h-100">
-  <div class="card p-4 shadow" style="width: 30%">
-    <h4 class="text-center mb-3">Login</h4>
+<div class="page-center">
+  <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+    <div class="card p-4 shadow">
+      <h4 class="text-center mb-3">Login</h4>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <div class="mb-3">
-        <label class="form-label"
-          >Email
-          <span
-            class="text-danger"
-            *ngIf="
-              loginForm.get('username')?.invalid &&
-              loginForm.get('username')?.touched
-            "
-            style="font-size: 10px"
-            >Email is required</span
-          ></label
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label class="form-label"
+            >Email
+            <span
+              class="text-danger"
+              *ngIf="
+                loginForm.get('username')?.invalid &&
+                loginForm.get('username')?.touched
+              "
+              style="font-size: 10px"
+              >Email is required</span
+            ></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            formControlName="username"
+            placeholder="Enter email"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"
+            >Password
+            <span
+              class="text-danger"
+              *ngIf="
+                loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.touched
+              "
+              style="font-size: 10px"
+              >Password is required
+            </span></label
+          >
+          <p style="font-size: 10px">
+            (Password must be min. 6 characters & must contain uppercase,
+            lowercase, number & special character)
+          </p>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Enter password"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-dark w-100 d-flex justify-content-center align-items-center"
+          [disabled]="loginForm.invalid || isLoading"
         >
-        <input
-          type="email"
-          class="form-control"
-          formControlName="username"
-          placeholder="Enter email"
-        />
-      </div>
+          <span *ngIf="!isLoading">Login</span>
+          <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+          </span>
+        </button>
 
-      <div class="mb-3">
-        <label class="form-label"
-          >Password
-          <span
-            class="text-danger"
-            *ngIf="
-              loginForm.get('password')?.invalid &&
-              loginForm.get('password')?.touched
-            "
-            style="font-size: 10px"
-            >Password is required
-          </span></label
-        >
-        <p style="font-size: 10px">
-          (Password must be min. 6 characters & must contain uppercase,
-          lowercase, number & special character)
-        </p>
-        <input
-          type="password"
-          class="form-control"
-          formControlName="password"
-          placeholder="Enter password"
-        />
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-dark w-100 d-flex justify-content-center align-items-center"
-        [disabled]="loginForm.invalid || isLoading"
-      >
-        <span *ngIf="!isLoading">Login</span>
-        <span *ngIf="isLoading" class="d-flex align-items-center gap-2">
-          <span class="spinner-border spinner-border-sm" role="status"></span>
-        </span>
-      </button>
-
-      <div class="text-center mt-3">
-        <a routerLink="/register">Create account</a>
-      </div>
-    </form>
+        <div class="text-center mt-3">
+          <a routerLink="/register">Create account</a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
