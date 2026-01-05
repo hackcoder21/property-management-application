@@ -1,8 +1,8 @@
-<h2>Dashboard - Users</h2>
+<h3 class="mb-2">Dashboard - Users</h3>
 <hr />
 
 <!-- Loading -->
-<div *ngIf="isLoading" class="text-center">
+<div *ngIf="isLoading" class="text-center py-5">
   <div class="spinner-border"></div>
 </div>
 
@@ -17,77 +17,146 @@
   </button>
 </div>
 
-<!-- Users table -->
-<div *ngIf="!isLoading && users.length > 0">
+<!-- Users table - Desktop view -->
+<div class="d-none d-md-block" *ngIf="!isLoading && users.length > 0">
   <button class="btn btn-primary mb-3" (click)="onCreateUser()">
     + Create User
   </button>
 
-  <table class="table table-bordered">
-    <thead class="table-dark">
-      <tr>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Actions</th>
-        <th>Download Report</th>
-      </tr>
-    </thead>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+          <th>Report</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.fullName }}</td>
-        <td>{{ user.email }}</td>
-        <td>
-          <button
-            class="btn btn-sm btn-primary me-2"
-            (click)="onViewProperties(user.id)"
-          >
-            View Properties
-          </button>
-          <button class="btn btn-sm btn-danger" (click)="onDeleteUser(user.id)">
-            Delete
-          </button>
-        </td>
-        <td>
-          <div class="position-relative">
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
             <button
-              class="btn btn-sm btn-secondary d-flex align-items-center justify-content-center report-btn"
-              [disabled]="
-                user.properties.length === 0 ||
-                downloadingReportPerUserId === user.id
-              "
-              (click)="toggleDropdown(user.id)"
+              class="btn btn-sm btn-primary me-2"
+              (click)="onViewProperties(user.id)"
             >
-              <span *ngIf="downloadingReportPerUserId !== user.id"
-                >Download Report</span
-              ><span *ngIf="downloadingReportPerUserId === user.id">
-                <span class="spinner-border spinner-border-sm"></span>
-              </span>
+              View Properties
             </button>
-
-            <div
-              *ngIf="
-                activeDropdownUserId === user.id &&
-                downloadingReportPerUserId !== user.id
-              "
-              class="dropdown-menu show mt-1"
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="onDeleteUser(user.id)"
             >
+              Delete User
+            </button>
+          </td>
+          <td>
+            <div class="position-relative">
               <button
-                class="dropdown-item"
-                (click)="downloadReport(user.id, 'excel')"
+                class="btn btn-sm btn-secondary d-flex align-items-center justify-content-center report-btn"
+                [disabled]="
+                  user.properties.length === 0 ||
+                  downloadingReportPerUserId === user.id
+                "
+                (click)="toggleDropdown(user.id)"
               >
-                Excel
+                <span *ngIf="downloadingReportPerUserId !== user.id"
+                  >Download Report</span
+                ><span *ngIf="downloadingReportPerUserId === user.id">
+                  <span class="spinner-border spinner-border-sm"></span>
+                </span>
               </button>
-              <button
-                class="dropdown-item"
-                (click)="downloadReport(user.id, 'pdf')"
+
+              <div
+                *ngIf="
+                  activeDropdownUserId === user.id &&
+                  downloadingReportPerUserId !== user.id
+                "
+                class="dropdown-menu show mt-1"
               >
-                PDF
-              </button>
+                <button
+                  class="dropdown-item"
+                  (click)="downloadReport(user.id, 'excel')"
+                >
+                  Excel
+                </button>
+                <button
+                  class="dropdown-item"
+                  (click)="downloadReport(user.id, 'pdf')"
+                >
+                  PDF
+                </button>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Users list - Mobile view -->
+<div class="d-block d-md-none" *ngIf="!isLoading && users.length > 0">
+  <button class="btn btn-primary w-100 mb-3" (click)="onCreateUser()">
+    + Create User
+  </button>
+
+  <div class="card mb-3 shadow-sm" *ngFor="let user of users">
+    <div class="card-body">
+      <h6 class="card-title mb-1">{{ user.fullName }}</h6>
+      <p class="text-muted small mb-2">{{ user.email }}</p>
+
+      <div class="d-grid gap-2">
+        <button
+          class="btn btn-sm btn-primary"
+          (click)="onViewProperties(user.id)"
+        >
+          View Properties
+        </button>
+
+        <button class="btn btn-sm btn-danger" (click)="onDeleteUser(user.id)">
+          Delete User
+        </button>
+
+        <button
+          class="btn btn-sm btn-secondary"
+          [disabled]="
+            user.properties.length === 0 ||
+            downloadingReportPerUserId === user.id
+          "
+          (click)="toggleDropdown(user.id)"
+        >
+          <span *ngIf="downloadingReportPerUserId !== user.id">
+            Download Report
+          </span>
+          <span *ngIf="downloadingReportPerUserId === user.id">
+            <span class="spinner-border spinner-border-sm"></span>
+          </span>
+        </button>
+      </div>
+
+      <div
+        *ngIf="
+          activeDropdownUserId === user.id &&
+          downloadingReportPerUserId !== user.id
+        "
+        class="border rounded p-2"
+      >
+        <button
+          class="btn btn-outline-dark btn-sm w-100 mb-2"
+          (click)="downloadReport(user.id, 'excel')"
+        >
+          Excel
+        </button>
+        <button
+          class="btn btn-outline-dark btn-sm w-100"
+          (click)="downloadReport(user.id, 'pdf')"
+        >
+          PDF
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

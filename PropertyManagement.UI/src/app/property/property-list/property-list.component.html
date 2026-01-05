@@ -1,8 +1,8 @@
-<h2>Dashboard - Properties</h2>
+<h3 class="mb-2">Dashboard - Properties</h3>
 <hr />
 
 <!-- Loading -->
-<div *ngIf="isLoading" class="text-center">
+<div *ngIf="isLoading" class="text-center py-5">
   <div class="spinner-border"></div>
 </div>
 
@@ -17,44 +17,71 @@
   </button>
 </div>
 
-<!-- Properties table -->
-<div *ngIf="!isLoading && property.length > 0">
+<!-- Properties table - Desktop view -->
+<div class="d-none d-md-block" *ngIf="!isLoading && property.length > 0">
   <button class="btn btn-primary mb-3" (click)="onCreateProperty()">
     + Create Property
   </button>
 
-  <table class="table table-bordered">
-    <thead class="table-dark">
-      <tr>
-        <th>Title</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Price</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let p of property">
-        <td>{{ p.title }}</td>
-        <td>{{ p.city }}</td>
-        <td>{{ p.state }}</td>
-        <td>₹ {{ p.price | number }}</td>
-        <td>
-          <button
-            class="btn btn-sm btn-primary me-2"
-            (click)="onViewProperty(p.id)"
-          >
-            View Property
-          </button>
-          <button
-            class="btn btn-sm btn-danger"
-            (click)="onDeleteProperty(p.id)"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr *ngFor="let p of property">
+          <td>{{ p.title }}</td>
+          <td>{{ p.city }}</td>
+          <td>{{ p.state }}</td>
+          <td>₹ {{ p.price | number }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-primary me-2"
+              (click)="onViewProperty(p.id)"
+            >
+              View Property
+            </button>
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="onDeleteProperty(p.id)"
+            >
+              Delete Property
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Properties list - Mobile view -->
+<div class="d-block d-md-none" *ngIf="!isLoading && property.length > 0">
+  <button class="btn btn-primary w-100 mb-3" (click)="onCreateProperty()">
+    + Create Property
+  </button>
+
+  <div class="card mb-3 shadow-sm" *ngFor="let p of property">
+    <div class="card-body">
+      <h6 class="card-title mb-1">{{ p.title }}</h6>
+      <p class="text-muted small mb-2">₹ {{ p.price | number }}</p>
+      <p>{{ p.city }}, {{ p.state }}</p>
+
+      <div class="d-grid gap-2">
+        <button class="btn btn-sm btn-primary" (click)="onViewProperty(p.id)">
+          View Property
+        </button>
+
+        <button class="btn btn-sm btn-danger" (click)="onDeleteProperty(p.id)">
+          Delete Property
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

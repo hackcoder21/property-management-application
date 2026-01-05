@@ -1,0 +1,15 @@
+.dashboard-page {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.dashboard-header {
+    flex-shrink: 0;
+}
+
+.dashboard-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
