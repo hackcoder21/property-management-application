@@ -128,8 +128,8 @@ Users ------ (1 - M) ------ Properties
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/5dbe15f2-732f-42b4-a043-653090328e8a" />
 
 - Generate report for user
-- <img width="1185" height="777" alt="image" src="https://github.com/user-attachments/assets/f6a25501-db11-43c1-9752-1b1aa951531a" />
-- <img width="1179" height="770" alt="image" src="https://github.com/user-attachments/assets/741703b6-7b73-4bc0-b8e4-57dbd293d524" />
+- <img width="1229" height="810" alt="image" src="https://github.com/user-attachments/assets/9de46e12-15c6-4777-aaf4-fba254b04ab7" />
+- <img width="1228" height="809" alt="image" src="https://github.com/user-attachments/assets/aac866c8-b69c-426b-8f86-58c9119bd03a" />
 
 - Add multiple properties under a user
 - Generate detailed report in Excel/PDF which highlights the user's portfolio & property details
