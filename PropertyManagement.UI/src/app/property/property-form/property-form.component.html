@@ -213,6 +213,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'property')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['property']">
+      Uploaded: {{ uploadedImageNames["property"] }}
+    </small>
   </div>
 
   <div class="mb-3">
@@ -227,6 +230,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'hall')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['hall']">
+      Uploaded: {{ uploadedImageNames["hall"] }}
+    </small>
   </div>
 
   <div class="mb-3">
@@ -241,6 +247,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'kitchen')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['kitchen']">
+      Uploaded: {{ uploadedImageNames["kitchen"] }}
+    </small>
   </div>
 
   <div class="mb-3">
@@ -255,6 +264,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'bathroom')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['bathroom']">
+      Uploaded: {{ uploadedImageNames["bathroom"] }}
+    </small>
   </div>
 
   <div class="mb-3">
@@ -269,6 +281,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'bedroom')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['bedroom']">
+      Uploaded: {{ uploadedImageNames["bedroom"] }}
+    </small>
   </div>
 
   <div class="mb-3">
@@ -283,6 +298,9 @@
       accept="image/*"
       (change)="onImageSelected($event, 'parking')"
     />
+    <small class="text-success" *ngIf="uploadedImageNames['parking']">
+      Uploaded: {{ uploadedImageNames["parking"] }}
+    </small>
   </div>
 
   <div class="mb-3">

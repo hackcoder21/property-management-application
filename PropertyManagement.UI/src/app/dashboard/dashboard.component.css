@@ -2,3 +2,8 @@
     width: 140px;
     justify-content: center;
 }
+
+.report-dropdown {
+  position: fixed !important;
+  z-index: 1055;
+}
