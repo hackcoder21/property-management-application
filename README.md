@@ -117,9 +117,6 @@ Users ------ (1 - M) ------ Properties
 - Before we can generate report, user must have properties
 
 - Property list for particular user
-- <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/ac39a8c9-0c74-4d6b-83eb-06a22db8bc96" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/795300e0-92ca-493b-95b6-5272f21df955" />
-- User can create properties
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/f820f123-db5b-4dba-b351-c7c5b678d822" />
 - <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/dbb0facb-8f3f-49c1-b555-dadc28f29359" />
 
