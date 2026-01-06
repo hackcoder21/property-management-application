@@ -102,21 +102,13 @@ Users ------ (1 - M) ------ Properties
 - Assigns default role: `Writer`
 - Login
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/45bcbd30-2403-4f94-933b-186e7c03a3a4" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/44555bb5-c2a6-4314-b8ec-88656e1bee70" />
 - Register
-- <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/7700e723-debd-4741-bc9c-a06d4c7d038d" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/22fcbccf-3c86-4ae3-8cce-c4d85a43d3fa" />
+- <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/248a6fa9-caaf-4432-9294-568d67dfb09f" />
 
 2. **Create users & properties**
 - Within application, create user with name & email
-
-- At initial stage there will be no users & properties
-- <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/88d70754-d6e3-4d5d-90a6-17c3c3737ed1" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/e598b8b4-2477-42f5-97c0-98ba3d57dd20" />
-
 - Create user
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/64b1b7e8-c67c-42d7-9c8d-93ae418e9651" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/31aa47da-8047-4b27-8c96-8f1ddef56fc4" />
 
 - User dashboard with list of users created
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/fbaf7851-7536-4cec-8e1f-c7171cdf5126" />
@@ -141,10 +133,6 @@ Users ------ (1 - M) ------ Properties
 - <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/5a3247ea-51f4-43b0-9d3a-e4fc3bd3ea6a" />
 
 - Generate report for user
-- Excel report
-- <img width="1242" height="895" alt="image" src="https://github.com/user-attachments/assets/0f426346-7ee1-46bc-b6da-aba52209453a" />
-- <img width="1239" height="898" alt="image" src="https://github.com/user-attachments/assets/01ae2be8-4f87-4087-87ce-ad5e86aac719" />
-- PDF report
 - <img width="1185" height="777" alt="image" src="https://github.com/user-attachments/assets/f6a25501-db11-43c1-9752-1b1aa951531a" />
 - <img width="1179" height="770" alt="image" src="https://github.com/user-attachments/assets/741703b6-7b73-4bc0-b8e4-57dbd293d524" />
 
