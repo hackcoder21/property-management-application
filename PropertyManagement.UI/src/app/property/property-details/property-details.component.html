@@ -1,3 +1,20 @@
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard">Users</a>
+    </li>
+
+    <li class="breadcrumb-item">
+      <a [routerLink]="['/dashboard/users', userId, 'properties']">
+        Properties
+      </a>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">Property Details</li>
+  </ol>
+</nav>
+
 <h3 class="mb-2">Dashboard - Property Details</h3>
 <hr />
 
