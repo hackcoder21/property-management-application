@@ -123,11 +123,9 @@ Users ------ (1 - M) ------ Properties
 - Create/Update property
 - User can create/update property along with property images
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/fe389ecb-93ef-4550-9aa7-9f8bbc7c6baa" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/96275039-ab45-4e9d-a35b-b9addac0b620" />
 
 - View property info
 - <img width="1920" height="1000" alt="image" src="https://github.com/user-attachments/assets/5dbe15f2-732f-42b4-a043-653090328e8a" />
-- <img width="540" height="870" alt="image" src="https://github.com/user-attachments/assets/5a3247ea-51f4-43b0-9d3a-e4fc3bd3ea6a" />
 
 - Generate report for user
 - <img width="1185" height="777" alt="image" src="https://github.com/user-attachments/assets/f6a25501-db11-43c1-9752-1b1aa951531a" />
